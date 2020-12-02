@@ -21,7 +21,7 @@ class Day2 {
             val (policy, password) = this.split(":")
             val (minMax, letter) = policy.split(" ")
             val (min, max) = minMax.split("-")
-            return Policy(min.toInt(), max.toInt(), letter.toCharArray()[0]) to password.trim()
+            return Policy(min.toInt(), max.toInt(), letter[0]) to password.trim()
         }
 
     }
