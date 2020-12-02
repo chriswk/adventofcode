@@ -38,7 +38,7 @@ class Day2 {
     fun part2(passwords: List<Pair<Policy, String>>): Int {
         return passwords.count { (policy, password) ->
             val (mi, ma) = password[policy.min-1] to password[policy.max-1]
-            mi != ma && (mi == policy.character || ma == policy.character)
+            (mi == policy.character) xor (ma == policy.character)
         }
     }
 
