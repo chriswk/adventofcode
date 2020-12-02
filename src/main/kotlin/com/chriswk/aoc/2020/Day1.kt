@@ -1,21 +1,19 @@
 package com.chriswk.aoc.`2020`
 
-import java.math.BigInteger
-
 class Day1 {
     companion object {
         @JvmStatic
         fun main(args: Array<String>): Unit {
             val day = Day1()
+            val numbers = "day1.txt".fileToLines().map { it.toInt() }.sorted()
             report {
-                day.part1()
+                day.part1(numbers)
             }
             report {
-                day.part2()
+                day.part2(numbers)
             }
-
             report {
-                day.part2ByCombinations()
+                day.part2ByCombinations(numbers)
             }
         }
     }
@@ -39,29 +37,42 @@ class Day1 {
             }
         }.firstOrNull()
     }
-    fun findByCombinations(goal: Int, options: Set<Int>): List<Int> {
+    fun findByCombinations(goal: Int, options: List<Int>): List<Int> {
         return options.combinations(3).first { (a,b,c) -> a+b+c == goal }
     }
 
 
-    fun part1(): Int {
-        val numbers = "day1.txt".fileToLines().map { it.toInt() }.toSet()
-        val (a,b) = findPair(2020, numbers)!!
+    fun part1(numbers: List<Int>): Int {
+        val (a,b) = findPair(2020, numbers.toSortedSet())!!
         return a*b
     }
 
-    fun part2(): Int {
-        val numbers = "day1.txt".fileToLines().map { it.toInt() }.toSet()
-        return findTriplet(2020, numbers)?.let { (a,b,c) ->
+    fun part2(numbers: List<Int>): Int {
+        return findTriplet(2020, numbers.toSortedSet())?.let { (a,b,c) ->
             a*b*c
         } ?: 0
 
     }
 
-    fun part2ByCombinations(): Int {
-        val numbers = "day1.txt".fileToLines().map { it.toInt() }.toSet()
+    fun part2ByCombinations(numbers: List<Int>): Int {
         val ans = findByCombinations(2020, numbers)
         return ans.fold(1) { acc, e -> acc*e }
 
+    }
+
+    fun fmrPartOne(): Int = fmrFindTarget("day1.txt".fileToLines().map { it.toInt() }, 2020)!!
+
+    private fun fmrFindTarget(expences: List<Int>, target: Int): Int? {
+        return expences
+            .firstOrNull { expences.contains(target - it) }
+            ?.let { (target - it) * it }
+    }
+
+    fun fmrPartTwo(): Int {
+        val expenses = "day1.txt".fileToLines().map { it.toInt() }
+        return expenses
+            .map { it to fmrFindTarget(expenses, 2020 - it) }
+            .first { it.second != null }
+            .let { it.first * it.second!! }
     }
 }
