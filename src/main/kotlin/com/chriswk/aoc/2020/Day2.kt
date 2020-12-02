@@ -32,15 +32,17 @@ class Day2 {
 
     fun part1(passwords: List<Pair<Policy, String>>): Int {
         return passwords.count { (policy, password) ->
-            password.count { it == policy.character } in policy.min..policy.max
+            policy.validPart1(password)
         }
     }
     fun part2(passwords: List<Pair<Policy, String>>): Int {
         return passwords.count { (policy, password) ->
-            val (mi, ma) = password[policy.min-1] to password[policy.max-1]
-            (mi == policy.character) xor (ma == policy.character)
+            policy.validPart2(password)
         }
     }
 
-    data class Policy(val min: Int, val max: Int, val character: Char)
+    data class Policy(val min: Int, val max: Int, val character: Char) {
+        fun validPart1(password: String) = password.count { it == character } in min..max
+        fun validPart2(password: String) = (password[min-1] == character) xor (password[max-1] == character)
+    }
 }
