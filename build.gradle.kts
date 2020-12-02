@@ -20,8 +20,9 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:2.12.1")
     implementation("org.apache.logging.log4j:log4j-api:2.12.1")
     testImplementation("org.assertj:assertj-core:3.18.1")
-    testImplementation("org.apache.junit.jupiter:junit-jupiter-api:5.7.0")
-    testRuntimeOnly("org.apache.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
 tasks.withType<Test> {
     useJUnitPlatform()

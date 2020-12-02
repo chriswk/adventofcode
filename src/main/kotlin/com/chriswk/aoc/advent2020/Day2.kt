@@ -1,20 +1,20 @@
-package com.chriswk.aoc.`2020`
+package com.chriswk.aoc.advent2020
 
-import org.apache.logging.log4j.LogManager
+import com.chriswk.aoc.AdventDay
+import com.chriswk.aoc.util.report
 
-class Day2 {
+class Day2 : AdventDay(2020, 2) {
+    private val passwords = inputAsLines.map { it.toPolicyAndPassword() }
     companion object {
-        val logger = LogManager.getLogger(Day2::class.java)
         @JvmStatic
         fun main(args: Array<String>): Unit {
             val day = Day2()
-           val data = day.parseFile()
             report {
-                day.part1(data)
+                day.part1()
             }
 
             report {
-                day.part2(data)
+                day.part2()
             }
         }
         fun String.toPolicyAndPassword(): Pair<Policy, String> {
@@ -26,16 +26,12 @@ class Day2 {
 
     }
 
-    fun parseFile(): List<Pair<Policy, String>> {
-        return "day2.txt".fileToLines().map { it.toPolicyAndPassword() }
-    }
-
-    fun part1(passwords: List<Pair<Policy, String>>): Int {
+    fun part1(): Int {
         return passwords.count { (policy, password) ->
             policy.validPart1(password)
         }
     }
-    fun part2(passwords: List<Pair<Policy, String>>): Int {
+    fun part2(): Int {
         return passwords.count { (policy, password) ->
             policy.validPart2(password)
         }

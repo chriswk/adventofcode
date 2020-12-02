@@ -1,11 +1,11 @@
-package com.chriswk.aoc.`2020`
+package com.chriswk.aoc.util
 
 import kotlinx.coroutines.channels.Channel
 import java.io.File
 import java.io.InputStream
-import java.lang.Math.abs
 import java.nio.charset.Charset
-import javax.sound.midi.Sequence
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.system.measureTimeMillis
 
 class Util {}
@@ -16,6 +16,13 @@ fun String.fileToLines(): List<String> {
     val path = "/$this"
     val res = object {}.javaClass.getResource(path)
     return File(res.toURI()).readLines()
+}
+
+fun dayInputAsLines(year: Int, day: Int): List<String> {
+    return "$year/Day$day.txt".fileToLines()
+}
+fun dayInputAsString(year:Int, day: Int): String {
+    return "$year/Day$day.txt".fileToString()
 }
 
 fun String.fileToString(): String {
@@ -43,7 +50,7 @@ fun <T> List<T>.toChannel(capacity: Int = Channel.UNLIMITED): Channel<T> {
 }
 
 fun report(f: () -> Number) {
-    var ans: Number? = null
+    var ans: Number?
     val timeTaken = measureTimeMillis { ans = f() }
     println("Answer [$ans] - took $timeTaken ms")
 }
@@ -77,3 +84,43 @@ fun <T> Iterable<T>.combinations(length: Int) =
                 for(j in i+1 until length) indices[j] = indices[j - 1] + 1
             }
         }
+val format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+fun <T> List<T>.infiniteCycle(): Sequence<T> {
+    val data = this
+    return sequence {
+        while(true) {
+            yieldAll(data)
+        }
+    }
+}
+
+fun <T> Sequence<T>.infiniteCycle(): Sequence<T> {
+    val seq = this
+    return sequence {
+        while(true) {
+            yieldAll(seq)
+        }
+    }
+}
+internal class LocalDateTimeProgressionIterator(start: LocalDateTime, val endInclusive: LocalDateTime, val stepMinutes: Long) : Iterator<LocalDateTime> {
+
+    var current = start
+    override fun hasNext() = current < endInclusive
+
+    override fun next(): LocalDateTime {
+        val next = current
+        current = current.plusMinutes(stepMinutes)
+        return next
+    }
+}
+
+operator fun LocalDateTime.rangeTo(other: LocalDateTime) = LocalDateTimeProgression(this, other)
+
+class LocalDateTimeProgression(override val start: LocalDateTime, override val endInclusive: LocalDateTime, val stepMinutes: Long = 1) : Iterable<LocalDateTime>, ClosedRange<LocalDateTime> {
+    override fun iterator(): Iterator<LocalDateTime> = LocalDateTimeProgressionIterator(start, endInclusive, stepMinutes)
+    infix fun step(minutes: Long) = LocalDateTimeProgression(start, endInclusive, minutes)
+}
+
+fun String.toLocalDateTime(): LocalDateTime {
+    return LocalDateTime.parse(this, format)
+}
