@@ -76,7 +76,6 @@ class Day4 : AdventDay(2020, 4) {
         fun hclValidPart1() = hcl?.isNotBlank() ?: false
         fun eclValidPart1() = ecl?.isNotBlank() ?: false
         fun pidValidPart1() = pid?.isNotBlank() ?: false
-        fun cidValidPart1() = cid?.isNotBlank() ?: true
         fun byrValidPart2() = byr != null && byr.isNumberBetween(1920, 2002)
         fun iyrValidPart2() = iyr != null && iyr.isNumberBetween(2010, 2020)
         fun eyrValidPart2() = eyr != null && eyr.isNumberBetween(2020, 2030)
@@ -92,8 +91,7 @@ class Day4 : AdventDay(2020, 4) {
                     hgtValidPart1() &&
                     hclValidPart1() &&
                     eclValidPart1() &&
-                    pidValidPart1() &&
-                    cidValidPart1()
+                    pidValidPart1()
         }
         fun isValidPart2() : Boolean {
             return byrValidPart2() &&

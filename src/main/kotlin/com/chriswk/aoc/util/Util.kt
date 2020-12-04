@@ -10,7 +10,6 @@ import kotlin.system.measureTimeMillis
 
 class Util {}
 val utf8 = Charset.forName("UTF-8")
-val digitsPattern = Regex("""\d+""")
 fun String.toInputStream() = Util::class.java.classLoader.getResourceAsStream(this)
 fun InputStream.lines() = this.readBytes().toString(utf8).lines()
 fun String.fileToLines(): List<String> {
@@ -34,10 +33,7 @@ fun String.isNumber(base: Int = 10): Boolean {
     return this.toLongOrNull(base) != null
 }
 fun String.isNumberBetween(min: Long, max: Long, base: Int = 10): Boolean {
-    return this.toLongOrNull(base)?.let { it in min..max } ?: false
-}
-fun String.allDigits(): Boolean {
-    return digitsPattern.matches(this)
+    return this.toLongOrNull(base) in min..max
 }
 
 fun <T> List<T>.permutations(): List<List<T>> {
