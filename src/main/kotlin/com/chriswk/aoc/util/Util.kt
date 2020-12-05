@@ -3,6 +3,7 @@ package com.chriswk.aoc.util
 import kotlinx.coroutines.channels.Channel
 import java.io.File
 import java.io.InputStream
+import java.lang.IllegalArgumentException
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -129,4 +130,18 @@ class LocalDateTimeProgression(override val start: LocalDateTime, override val e
 
 fun String.toLocalDateTime(): LocalDateTime {
     return LocalDateTime.parse(this, format)
+}
+
+fun binaryParser(input: String, zero: Char, one: Char): Int {
+    return binaryParser(input, setOf(zero), setOf(one))
+}
+
+fun binaryParser(input: String, zeros: Set<Char>, ones: Set<Char>): Int {
+    return input.fold(0) { a, c ->
+        when(c) {
+            in ones -> 2 * a + 1
+            in zeros -> 2 * a
+            else -> throw IllegalArgumentException("Unexpected")
+        }
+    }
 }
