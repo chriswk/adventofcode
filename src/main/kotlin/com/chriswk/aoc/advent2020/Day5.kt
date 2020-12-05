@@ -13,6 +13,9 @@ class Day5 : AdventDay(2020, 5) {
                 day.part1()
             }
             report {
+                day.part1()
+            }
+            report {
                 day.part2()
             }
         }
@@ -24,10 +27,7 @@ class Day5 : AdventDay(2020, 5) {
     }
 
     fun part2(): Int {
-        val ids = inputAsLines.map {
-            val (row, column) = it.take(7) to it.drop(7)
-            findRow(row) * 8 + findColumn(column)
-        }.sorted()
+        val ids = inputAsLines.map { toSeatId(it) }.sorted()
         val min = ids.first()
         val max = ids.last()
         val idsSum = ids.sum()
