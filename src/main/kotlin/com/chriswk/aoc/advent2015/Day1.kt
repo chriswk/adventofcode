@@ -27,7 +27,7 @@ class Day1: AdventDay(2015, 1) {
         val seq: Sequence<Pair<Int, Int>> = generateSequence(Pair(0,0)) { (floor, idx) ->
             floor + input[idx].direction() to idx + 1
         }
-        val (_, idx) = seq.dropWhile { (floor, idx) -> floor != desiredFloor }.first()
+        val (_, idx) = seq.dropWhile { (floor, _) -> floor != desiredFloor }.first()
         return idx
     }
     fun part1(): Int {
@@ -38,7 +38,7 @@ class Day1: AdventDay(2015, 1) {
         return firstEntry(inputAsString, -1)
     }
 
-    fun Char.direction(): Int {
+    private fun Char.direction(): Int {
         return when(this) {
             '(' -> 1
             ')' -> -1

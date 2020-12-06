@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm").version("1.4.20")
+    jacoco
 }
 
 repositories {
@@ -26,6 +27,12 @@ dependencies {
 }
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        showExceptions = true
+        showStackTraces = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        events("passed", "skipped", "failed")
+    }
 }
 tasks.withType<KotlinCompile> {
     kotlinOptions {

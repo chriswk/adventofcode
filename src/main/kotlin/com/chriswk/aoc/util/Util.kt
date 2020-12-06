@@ -4,7 +4,9 @@ import kotlinx.coroutines.channels.Channel
 import java.io.File
 import java.io.InputStream
 import java.lang.IllegalArgumentException
+import java.math.BigInteger
 import java.nio.charset.Charset
+import java.security.MessageDigest
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.system.measureTimeMillis
@@ -144,4 +146,9 @@ fun binaryParser(input: String, zeros: Set<Char>, ones: Set<Char>): Int {
             else -> throw IllegalArgumentException("Unexpected")
         }
     }
+}
+
+fun String.md5(): String {
+    val md = MessageDigest.getInstance("MD5")
+    return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
 }
