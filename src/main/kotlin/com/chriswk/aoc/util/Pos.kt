@@ -13,8 +13,9 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         }
     }
 
-    fun next(move: Char): Pos {
+    fun next(move: Char?): Pos {
         return when(move) {
+            null -> this
             in "^N" -> north()
             in "E>" -> east()
             in "Sv" -> south()

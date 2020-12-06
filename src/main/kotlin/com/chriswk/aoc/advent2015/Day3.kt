@@ -18,24 +18,16 @@ class Day3: AdventDay(2015, 3) {
         }
     }
     fun performMovesPart1(moves: String): Set<Pos> {
-        return moves.fold(setOf(Pos(0,0)) to Pos(0,0)) { (visited, prev), move ->
-            val next = prev.next(move)
-            visited + next to next
-        }.first
+        return moves.runningFold(Pos(0, 0)) { last, move ->
+            last.next(move)
+        }.toSet()
     }
     fun performMovesPart2(instructions: String): Set<Pos> {
-        val (moves, _, _) = instructions.chunked(2).fold(
-            Triple(
-                setOf(Pos(0, 0)),
-                Pos(0, 0),
-                Pos(0,0)
-            )
-        ) { (houses, santa, robo), inst ->
-            val newSanta = santa.next(inst[0])
-            val newRobo = inst.getOrNull(1)?.let { robo.next(it) } ?: robo
-            Triple(houses + newSanta + newRobo, newSanta, newRobo)
-        }
-        return moves
+        return instructions.chunked(2).runningFold(listOf(Pos(0, 0), Pos(0,0))) { givers, moves ->
+            givers.mapIndexed { i, g ->
+                g.next(moves.getOrNull(i))
+            }
+        }.flatten().toSet()
     }
 
     fun part1(): Int {
