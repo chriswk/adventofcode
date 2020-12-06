@@ -18,7 +18,10 @@ class Day6 : AdventDay(2020,6) {
     }
 
     fun toAnswers(group: String): Int {
-        return group.filter { it in 'a'..'z' }.toSet().size
+        val answers = group.lines().map { it.toSet() }
+        return answers.fold(answers.first()) { ans, member ->
+            ans.union(member)
+        }.size
     }
 
     fun toUnanimousAnswers(group: String): Int {
