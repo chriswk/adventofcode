@@ -1,6 +1,5 @@
 package com.chriswk.aoc.advent2015
 
-import com.chriswk.aoc.advent.Slow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
