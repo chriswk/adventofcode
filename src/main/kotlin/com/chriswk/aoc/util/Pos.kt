@@ -15,10 +15,10 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
 
     fun next(move: Char): Pos {
         return when(move) {
-            'N' -> north()
-            'E' -> east()
-            'S' -> south()
-            'W' -> west()
+            in "^N" -> north()
+            in "E>" -> east()
+            in "Sv" -> south()
+            in "W<" -> west()
             else -> throw IllegalArgumentException("Don't know how to go $move")
         }
     }
