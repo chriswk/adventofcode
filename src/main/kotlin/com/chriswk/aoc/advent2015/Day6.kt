@@ -44,10 +44,9 @@ class Day6 : AdventDay(2015, 6) {
 }
 
 data class Instruction(val operation: Operation, val minX: Int, val minY: Int, val maxX: Int, val maxY: Int) {
-    val points: List<Pos> = (minY..maxY).flatMap { y -> (minX..maxX).map { x -> Pos(x, y) } }
+    val points: List<Int> = (minY..maxY).flatMap { y -> (minX..maxX).map { x -> y*1000 + x } }
     fun actPart1(grid: Array<Int>) {
-        points.forEach { p: Pos ->
-            val idx = p.toIndex(1000)
+        points.forEach { idx ->
             when (operation) {
                 Operation.ON -> grid[idx] = 1
                 Operation.OFF -> grid[idx] = 0
@@ -62,8 +61,7 @@ data class Instruction(val operation: Operation, val minX: Int, val minY: Int, v
     }
 
     fun actPart2(grid: Array<Int>) {
-        points.forEach {
-            val idx = it.toIndex(1000)
+        points.forEach { idx ->
             when (operation) {
                 Operation.ON -> grid[idx]++
                 Operation.OFF -> grid[idx] = max(0, grid[idx] - 1)
