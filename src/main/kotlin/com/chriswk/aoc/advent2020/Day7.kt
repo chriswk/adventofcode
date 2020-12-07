@@ -75,7 +75,7 @@ class Day7: AdventDay(2020, 7) {
     }
 
     fun part2(): Int {
-        val graph = parsePart1(inputAsLines)
+        val graph = parsePart2(inputAsLines)
         return findHowManyBags(graph, "shiny gold") - 1
     }
 
