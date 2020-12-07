@@ -10,8 +10,8 @@ class Day7Test {
         val day = Day7()
         val rules = day.readRule("light red bags contain 1 bright white bag, 2 muted yellow bags.")
         assertThat(rules).hasSize(2)
-        assertThat(rules.first()).isEqualTo(Pair("light red", "bright white"))
-        assertThat(rules[1]).isEqualTo(Pair("light red", "muted yellow"))
+        assertThat(rules.first()).isEqualTo(Pair("light red" to 1, "bright white" to 1))
+        assertThat(rules[1]).isEqualTo(Pair("light red" to 1, "muted yellow" to 2))
         assertThat(day.toAscendantGraph(rules)).containsKeys("bright white", "muted yellow")
     }
 
@@ -73,5 +73,10 @@ class Day7Test {
         val map = day.parsePart2(input)
         val f = day.findHowManyBags(map, "shiny gold") - 1
         assertThat(f).isEqualTo(3 + 1*(3+4) + 2*(5+6))
+    }
+
+    @Test
+    fun part2() {
+        assertThat(Day7().part2()).isEqualTo(89084)
     }
 }
