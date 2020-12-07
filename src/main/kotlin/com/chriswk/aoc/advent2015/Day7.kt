@@ -134,8 +134,23 @@ class Day7 : AdventDay(2015, 7) {
         return register["a"]!!.toInt()
     }
 
+
     fun part2(): Int {
-        return 0
+        val fromPart1 = 46065
+        val program = parseInstructions(inputAsLines)
+        val graph = overrideInput(buildDependencyGraph(program), "b", fromPart1)
+        val registry = mutableMapOf<String, Int>()
+        walkGraph(registry, graph, "a")
+        return registry["a"]!!.toInt()
+    }
+
+    private fun overrideInput(
+        graph: Map<String, Instruction>,
+        s: String,
+        fromPart1: Int
+    ): Map<String, Instruction> {
+        val original = graph[s]
+        return graph + (s to original!!.copy(signal = fromPart1))
     }
 
     data class Instruction(
