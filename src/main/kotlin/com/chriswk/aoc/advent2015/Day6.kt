@@ -3,6 +3,7 @@ package com.chriswk.aoc.advent2015
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.Pos
 import com.chriswk.aoc.util.report
+import com.chriswk.aoc.util.toInt
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import kotlin.math.max
@@ -87,9 +88,7 @@ data class Instruction(val operation: Operation, val minX: Int, val minY: Int, v
     }
 }
 
-fun toInt(group: MatchGroup?): Int {
-    return group?.value?.toInt() ?: throw IllegalStateException("Couldn't parse to value")
-}
+
 
 enum class Operation {
     OFF,

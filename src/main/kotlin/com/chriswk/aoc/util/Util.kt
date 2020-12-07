@@ -4,6 +4,7 @@ import kotlinx.coroutines.channels.Channel
 import java.io.File
 import java.io.InputStream
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.MessageDigest
@@ -151,4 +152,8 @@ fun binaryParser(input: String, zeros: Set<Char>, ones: Set<Char>): Int {
 fun String.md5(): String {
     val md = MessageDigest.getInstance("MD5")
     return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
+}
+
+fun toInt(group: MatchGroup?): Int {
+    return group?.value?.toInt() ?: throw IllegalStateException("Couldn't parse to value")
 }
