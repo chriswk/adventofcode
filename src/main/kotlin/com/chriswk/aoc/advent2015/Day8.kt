@@ -2,6 +2,7 @@ package com.chriswk.aoc.advent2015
 
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.report
+import org.apache.logging.log4j.LogManager
 
 class Day8 : AdventDay(2015, 8) {
     companion object {
@@ -15,6 +16,7 @@ class Day8 : AdventDay(2015, 8) {
                 day.part2()
             }
         }
+        val logger = LogManager.getLogger(Day8::javaClass)
     }
 
     fun part1String(input: String): Pair<Int, Int> {
@@ -36,12 +38,7 @@ class Day8 : AdventDay(2015, 8) {
     }
 
     fun decode(input: String): String {
-        return """"${input.replace("""\\""", """\\\""")
-            .replace("""\"""", """\\"""")
-            .replace("""\x""", """\\x""")
-            .replace(""""""", """\"""")}""""
-
-
+        return "-${input.replace(quotes, "__")}-"
     }
 
     fun parseMultiple(input: List<String>): List<Pair<Int, Int>> {
@@ -53,12 +50,13 @@ class Day8 : AdventDay(2015, 8) {
 
     fun part1(): Int {
         val i = parseMultiple(inputAsLines)
-        return i.sumBy { it.first } - i.sumBy { it.second }
+        return i.sumBy { it.first - it.second }
     }
 
+    val quotes = Regex("""(")|(\\)""")
     fun part2(): Int {
         val i = parseMultiplePart2(inputAsLines)
-        return i.sumBy { it.second.length } - i.sumBy { it.first.length }
+        return i.sumBy { it.second.length - it.first.length }
     }
 
 }

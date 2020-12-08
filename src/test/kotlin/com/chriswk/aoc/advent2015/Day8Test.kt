@@ -44,6 +44,11 @@ class Day8Test {
         assertThat(decoded).isEqualTo(decodedString)
     }
 
+    @Test
+    fun part2() {
+        assertThat(Day8().part2()).isEqualTo(2085)
+    }
+
     companion object {
         @JvmStatic
         fun exampleStrings(): Stream<Arguments> {
@@ -61,11 +66,11 @@ class Day8Test {
         @JvmStatic
         fun exampleStringsPart2(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of(""""\x27"""", """"\"\\x27\"""""),
-                Arguments.of(""""abc"""",  """"\"abc\"""""),
-                Arguments.of(""""aaa\"aaa"""", """"\"aaa\\\"aaa\"""""),
-                Arguments.of("""""""", """"\"\"""""),
-                Arguments.of("""\\""", """"\\\"""")
+                Arguments.of(""""\x27"""", """-____x27__-"""),
+                Arguments.of(""""abc"""",  """-__abc__-"""),
+                Arguments.of(""""aaa\"aaa"""", """-__aaa____aaa__-"""),
+                Arguments.of("""""""", """-____-"""),
+                Arguments.of("""\\""", """-____-""")
             )
         }
     }
