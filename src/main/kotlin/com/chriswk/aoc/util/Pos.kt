@@ -24,13 +24,14 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         }
     }
 
-    fun distanceTo(other: Pos): Int {
+    fun manhattanDistanceTo(other: Pos): Int {
         return Math.abs(other.x - x) + Math.abs(other.y - y)
     }
 
     fun directDistance(other: Pos): Double {
         return Math.sqrt((other.x - x).toDouble().pow(2) + (other.y - y).toDouble().pow(2))
     }
+
 
     fun isPositive(): Boolean = x >= 0 && y >= 0
     fun north(): Pos = Pos(x, y - 1)
@@ -46,4 +47,8 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
 
     fun toIndex(width: Int): Int = width * y + x
 
+}
+
+operator fun Pos.plus(other: Pos): Pos {
+    return Pos(this.x + other.x, this.y + other.y)
 }
