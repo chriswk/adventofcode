@@ -38,6 +38,12 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
     fun west(): Pos = Pos(x - 1, y)
     fun east(): Pos = Pos(x + 1, y)
 
+    fun neighbours(): List<Pos> = listOf(
+        Pos(x - 1, y - 1), Pos(x, y - 1), Pos(x + 1, y - 1),
+        Pos(x, y - 1), Pos(x, y + 1),
+        Pos(x - 1, y + 1), Pos(x, y + 1), Pos(x + 1, y + 1)
+    )
+
     fun toIndex(width: Int): Int = width * y + x
 
 }
