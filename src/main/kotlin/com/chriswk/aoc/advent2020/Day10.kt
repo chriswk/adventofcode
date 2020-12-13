@@ -36,9 +36,9 @@ class Day10: AdventDay(2020, 10) {
 
     fun findPossibleValidPathsToUseAll(adapters: List<Int>): Long {
         val max = adapters.maxOrNull()!!
-        val allAdapters = (listOf(0, max + 3) + adapters).sorted()
+        val allAdapters = (listOf(max + 3) + adapters).sorted()
         val wayToReachAdapter = mutableMapOf(0 to 1L)
-        allAdapters.drop(1).forEach { jolt ->
+        allAdapters.forEach { jolt ->
             wayToReachAdapter[jolt] = (1..3).map {
                 wayToReachAdapter.getOrDefault(jolt - it, 0)
             }.sum()
