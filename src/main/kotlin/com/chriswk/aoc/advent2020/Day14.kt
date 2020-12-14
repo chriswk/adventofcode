@@ -2,6 +2,7 @@ package com.chriswk.aoc.advent2020
 
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.report
+import java.lang.IllegalArgumentException
 import java.lang.Math.pow
 import kotlin.math.pow
 
@@ -38,6 +39,19 @@ class Day14: AdventDay(2020, 14) {
             }
         }.first
     }
+    fun executeInstructionsPart2(masker: Masker, instructions: List<String>): Map<Long, Long> {
+        return instructions.fold(mutableMapOf<Long, Long>() to masker) { (memory, masker), instr ->
+            if (instr.startsWith("mask =")) {
+                memory to Masker(instr.split("=").map { it.trim()}[1])
+            } else {
+                val (addressStr, value) = instr.split("=").map { it.trim() }
+                val address = addressStr.replace("mem[", "").replace("]", "").toLong()
+                val addresses = masker.part2Mask(address)
+                addresses.forEach { memory[it] = value.toLong() }
+                memory to masker
+            }
+        }.first
+    }
 
     fun sumOfMemory(memory: Map<Long, Long>): Long {
         return memory.values.sum()
@@ -49,15 +63,52 @@ class Day14: AdventDay(2020, 14) {
         return sumOfMemory(memory)
     }
 
-    fun part2(): Int {
-        return 0
+    fun part2(): Long {
+        val (masker, instructions) = bitmaskInstructions(inputAsLines)
+        val memory = executeInstructionsPart2(masker, instructions)
+        return sumOfMemory(memory)
     }
 
     data class Masker(val originalMask: String, val andMask: Long, val orMask: Long) {
-        constructor(mask: String) : this(originalMask = mask, andMask = mask.replace('X', '1').toLong(2),
+        constructor(mask: String) : this(originalMask = mask.padStart(36, '0'), andMask = mask.replace('X', '1').toLong(2),
             orMask = mask.replace('X', '0').toLong(2))
         fun mask(input: Long): Long {
             return (input and andMask) or orMask
         }
+        fun masks(): List<String> {
+            val range = (0.until(2.toDouble().pow(originalMask.count { it == 'X' }).toLong())).toList()
+            val masks = range.map {
+                it.bitToN(36).reversed()
+            }
+            val floatings = masks.map { floatingMask ->
+                originalMask.fold("" to 0) { (soFar, idx), c ->
+                    if (c == 'X') {
+                        soFar + floatingMask[idx] to idx + 1
+                    } else {
+                        soFar + c to idx
+                    }
+                }.first
+            }
+            return floatings
+        }
+        fun part2Mask(input: Long): List<Long> {
+            val inputStr = input.toString(2).padStart(36, '0')
+            return masks().map { mask ->
+                inputStr.mapIndexed { i, inp ->
+                    if (originalMask[i] == 'X') {
+                        mask[i]
+                    } else {
+                        if (inp == '1' || mask[i] == '1') {
+                            '1'
+                        } else {
+                            '0'
+                        }
+                    }
+                }.joinToString(separator = "")
+            }.map { it.toLong(2) }
+        }
     }
+}
+fun Long.bitToN(bits: Int): String {
+    return this.toString(2).padStart(bits, '0')
 }
