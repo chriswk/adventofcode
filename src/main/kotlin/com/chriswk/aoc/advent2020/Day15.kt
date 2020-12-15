@@ -31,15 +31,15 @@ class Day15 : AdventDay(2020, 15) {
     }
 
     fun readNumbers(numbers: List<Int>): Sequence<Pair<Int, Int>> {
-        val numbersSeen = numbers.dropLast(1).mapIndexed { idx, n -> n to mutableListOf(idx+1) }.toMap().toMutableMap()
+        val numbersSeen = numbers.dropLast(1).mapIndexed { idx, n -> n to idx + 1 }.toMap().toMutableMap()
         return generateSequence(numbers.last() to numbers.size) { (previous, previousTurn) ->
             val thisTurn = previousTurn + 1
             if (numbersSeen.containsKey(previous)) {
-                val alreadySeen = numbersSeen.getValue(previous).last()
-                numbersSeen[previous]!!.add(previousTurn)
-                previousTurn - alreadySeen to thisTurn
+                val diff = previousTurn - numbersSeen.getValue(previous)
+                numbersSeen[previous] = previousTurn
+                diff to thisTurn
             } else {
-                numbersSeen[previous] = mutableListOf(previousTurn)
+                numbersSeen[previous] = previousTurn
                 0 to thisTurn
             }
         }
