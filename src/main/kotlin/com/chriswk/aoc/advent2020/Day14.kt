@@ -6,7 +6,7 @@ import java.lang.IllegalArgumentException
 import java.lang.Math.pow
 import kotlin.math.pow
 
-class Day14: AdventDay(2020, 14) {
+class Day14 : AdventDay(2020, 14) {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -32,21 +32,22 @@ class Day14: AdventDay(2020, 14) {
                 memory to Masker(instr.split("=").map { it.trim() }[1])
             } else {
                 val (addressStr, value) = instr.split("=").map { it.trim() }
-                val address = addressStr.replace("mem[", "").replace("]", "").toLong()
+                val address = addressStr.substringAfter("mem[").substringBefore("]").toLong()
                 val maskedValue = masker.mask(value.toLong())
                 memory[address] = maskedValue
                 memory to masker
             }
         }.first
     }
+
     fun executeInstructionsPart2(masker: Masker, instructions: List<String>): Map<Long, Long> {
         return instructions.fold(mutableMapOf<Long, Long>() to masker) { (memory, masker), instr ->
             if (instr.startsWith("mask =")) {
-                memory to Masker(instr.split("=").map { it.trim()}[1])
+                memory to Masker(instr.split("=").map { it.trim() }[1])
             } else {
                 val (addressStr, value) = instr.split("=").map { it.trim() }
                 val address = addressStr.replace("mem[", "").replace("]", "").toLong()
-                val addresses = masker.part2Mask(address)
+                val addresses = masker.addressMasks(address)
                 addresses.forEach { memory[it] = value.toLong() }
                 memory to masker
             }
@@ -70,45 +71,32 @@ class Day14: AdventDay(2020, 14) {
     }
 
     data class Masker(val originalMask: String, val andMask: Long, val orMask: Long) {
-        constructor(mask: String) : this(originalMask = mask.padStart(36, '0'), andMask = mask.replace('X', '1').toLong(2),
-            orMask = mask.replace('X', '0').toLong(2))
+        constructor(mask: String) : this(
+            originalMask = mask.padStart(36, '0'), andMask = mask.replace('X', '1').toLong(2),
+            orMask = mask.replace('X', '0').toLong(2)
+        )
+
         fun mask(input: Long): Long {
             return (input and andMask) or orMask
         }
-        fun masks(): List<String> {
-            val range = (0.until(2.toDouble().pow(originalMask.count { it == 'X' }).toLong())).toList()
-            val masks = range.map {
-                it.bitToN(36).reversed()
-            }
-            val floatings = masks.map { floatingMask ->
-                originalMask.fold("" to 0) { (soFar, idx), c ->
-                    if (c == 'X') {
-                        soFar + floatingMask[idx] to idx + 1
-                    } else {
-                        soFar + c to idx
+
+        fun addressMasks(address: Long): List<Long> {
+            val addresses = mutableListOf(address.bitToN(36).toCharArray())
+            originalMask.forEachIndexed { idx, bit ->
+                when (bit) {
+                    '1' -> addresses.forEach { it[idx] = '1' }
+                    'X' -> {
+                        addresses.forEach { it[idx] = '1' }
+                        addresses.addAll(addresses.map { it.copyOf().apply { this[idx] = '0' } })
                     }
-                }.first
+                }
             }
-            return floatings
+            return addresses.map { it.joinToString("").toLong(2) }
         }
-        fun part2Mask(input: Long): List<Long> {
-            val inputStr = input.toString(2).padStart(36, '0')
-            return masks().map { mask ->
-                inputStr.mapIndexed { i, inp ->
-                    if (originalMask[i] == 'X') {
-                        mask[i]
-                    } else {
-                        if (inp == '1' || mask[i] == '1') {
-                            '1'
-                        } else {
-                            '0'
-                        }
-                    }
-                }.joinToString(separator = "")
-            }.map { it.toLong(2) }
-        }
+
     }
 }
+
 fun Long.bitToN(bits: Int): String {
     return this.toString(2).padStart(bits, '0')
 }

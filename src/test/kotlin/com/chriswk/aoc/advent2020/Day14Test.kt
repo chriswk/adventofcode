@@ -31,16 +31,9 @@ class Day14Test {
     }
 
     @Test
-    fun part2MaskerWorks() {
-        val masker = Day14.Masker("X1001X".padStart(36, '0'))
-        assertThat(masker.masks()).hasSize(4)
-        assertThat(masker.masks()).contains(18L.bitToN(36), 19L.bitToN(36), 50L.bitToN(36), 51L.bitToN(36))
-    }
-
-    @Test
     fun appliesAllMasks() {
         val masker = Day14.Masker("X1001X".padStart(36, '0'))
-        assertThat(masker.part2Mask(42)).containsAll(listOf(26L,27L,58L,59L))
+        assertThat(masker.addressMasks(42)).containsAll(listOf(26L,27L,58L,59L))
     }
 
     @Test
