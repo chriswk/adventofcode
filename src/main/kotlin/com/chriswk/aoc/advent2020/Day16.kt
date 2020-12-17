@@ -3,8 +3,9 @@ package com.chriswk.aoc.advent2020
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.report
 
-class Day16: AdventDay(2020, 16) {
+class Day16 : AdventDay(2020, 16) {
     val rangesReg = """(\d+)-(\d+)""".toRegex()
+
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -32,6 +33,7 @@ class Day16: AdventDay(2020, 16) {
         val ranges = input.substringBefore("your ticket").trim().lines()
         return findValidRanges(ranges)
     }
+
     fun parseTickets(input: String): List<Ticket> {
         return input.substringAfter("nearby tickets:").trim().lines().map { Ticket(it) }
     }
@@ -43,9 +45,9 @@ class Day16: AdventDay(2020, 16) {
     }
 
     fun findProductOfDepartureCols(placements: Map<String, Int>, ticket: Ticket): Long {
-        return placements.keys.filter { it.startsWith("departure") }.map {
-            ticket.numbers[placements.getValue(it)]
-        }.fold(1) { acc, i -> acc * i }
+        return placements.entries.filter { it.key.startsWith("departure") }.map { (k, v) ->
+            ticket.numbers[v]
+        }.product()
     }
 
     fun solvePart2(input: String): Long {
@@ -91,17 +93,21 @@ class Day16: AdventDay(2020, 16) {
         )
 
         fun invalidNumbers(validRanges: Sequence<IntRange>): List<Int> {
-            return numbers.filter { ticketNumber -> validRanges.none { ticketNumber in it }}
+            return numbers.filter { ticketNumber -> validRanges.none { ticketNumber in it } }
         }
+
         fun isValid(validRanges: Sequence<IntRange>): Boolean {
-            return numbers.all { ticketNumber -> validRanges.any { ticketNumber in it }}
+            return numbers.all { ticketNumber -> validRanges.any { ticketNumber in it } }
         }
 
         fun validRules(rules: Map<String, Sequence<IntRange>>): List<Set<String>> {
             return numbers.map { number ->
-                rules.entries.filter { it.value.any { number in it }
+                rules.entries.filter {
+                    it.value.any { number in it }
                 }.map { it.key }.toSet()
             }
         }
     }
 }
+
+fun List<Int>.product(): Long = this.fold(1) { acc, e -> acc * e }
