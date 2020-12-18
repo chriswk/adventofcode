@@ -17,73 +17,59 @@ class Day18: AdventDay(2020, 18) {
         }
     }
 
-    fun op(op: MathOp, x: Long, y: Long): Long {
-        return when(op) {
-            MathOp.MULTIPLICATION -> x * y
-            MathOp.PLUS -> x + y
-        }
+
+    fun part1(): Long {
+        return inputAsLines.map { eval(it, false) }.sum()
     }
 
-    fun processHomeworkLine(line: String): Long {
-        if (line.isEmpty()) {
-            return 0L
-        }
-        val pieces = if (line.endsWith(" * ") || line.endsWith(" + ")) {
-            line.split(" ").dropLast(1)
-        } else {
-            line.split(" ")
-        }
-        return pieces.drop(1).fold(SoFar(sum=pieces.first().toLong())) { soFar, nextPart ->
-            if (soFar.operation != null) {
-                SoFar(sum = op(soFar.operation, soFar.sum, nextPart.toLong()), operation = null)
-            } else {
-                soFar.copy(operation = MathOp.from(nextPart)!!)
-            }
-        }.sum
+    fun part2(): Long {
+        return inputAsLines.map { eval(it, true) }.sum()
     }
 
-    fun doMath(problem: String): Long {
-        return if (!problem.contains(")")) {
-            processHomeworkLine(problem)
-        } else if (!problem.contains("(")) {
-            //No more brackets, just calculate to end of brackets
-                doMath(problem.substringBefore(")"))
-        } else {
-            val beforeBracketsString = problem.substringBefore("(")
-            if (beforeBracketsString.isNotEmpty()) {
-                val beforeBrackets = doMath(beforeBracketsString)
-                val inBrackets = problem.substringAfter("(")
-                if (beforeBracketsString.endsWith(" + ")) {
-                    beforeBrackets + doMath(inBrackets)
-                } else {
-                    beforeBrackets * doMath(inBrackets)
+    // converts the expression to rpn using shunting-yard
+    // https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+    fun eval(exp: String, opPrecedence: Boolean): Long {
+        val expLength = exp.length
+        val outputQ = CharArray(expLength)
+        val opStack = CharArray(expLength)
+        var outHead = expLength
+        var opStackHead = -1
+        exp.toCharArray().forEach {
+            when(it) {
+                ' ' -> {}
+                '(' -> opStack[++opStackHead] = it
+                ')' -> {
+                    while (opStack[opStackHead] != '(') {
+                        outputQ[--outHead] = opStack[opStackHead--]
+                    }
+                    opStackHead--
                 }
-            } else {
-                doMath(problem.substringAfter("("))
-            }
-        }
-    }
-
-    fun part1(): Int {
-        return 0
-    }
-
-    fun part2(): Int {
-        return 0
-    }
-
-    data class SoFar(val sum: Long, val operation: MathOp? = null)
-    enum class MathOp {
-        PLUS,
-        MULTIPLICATION;
-        companion object {
-            fun from(c: String): MathOp? {
-                return when (c) {
-                    "+" -> PLUS
-                    "*" -> MULTIPLICATION
-                    else -> null
+                '+', '*' -> {
+                    while (opStackHead >= 0 && (!opPrecedence || opStack[opStackHead] == '+') && opStack[opStackHead] != '(') {
+                        outputQ[--outHead] = opStack[opStackHead--]
+                    }
+                    opStack[++opStackHead] = it
                 }
+                else -> outputQ[--outHead] = it
             }
         }
+        System.arraycopy(opStack, 0, outputQ, outHead - (opStackHead + 1), opStackHead + 1);
+
+        return evalRpn(outputQ, outHead - (opStackHead + 1));
+    }
+
+    fun evalRpn(rpn: CharArray, size: Int): Long {
+        val stack = LongArray(size)
+        var head = -1
+        var i = rpn.size - 1
+        while (i >= size) {
+            when(rpn[i]) {
+                '+' -> stack[--head] = stack[head+1] + stack[head]
+                '*' -> stack[--head] = stack[head+1] * stack[head]
+                else -> stack[++head] = (rpn[i] - '0').toLong()
+            }
+            i--
+        }
+        return stack[head]
     }
 }

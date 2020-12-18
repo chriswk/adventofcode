@@ -9,26 +9,25 @@ import java.util.stream.Stream
 
 class Day18Test {
 
-    @Test
-    fun canPerformMathOnNoBrackets() {
-        val day = Day18()
-        assertThat(day.processHomeworkLine("1 + 2 * 3 + 4 * 5 + 6")).isEqualTo(71)
-    }
-
-
     @ParameterizedTest
     @MethodSource("simpleMath")
     fun canPerformMathWithBrackets(problem: String, answer: Long) {
-        assertThat(Day18().doMath(problem)).isEqualTo(answer)
+        assertThat(Day18().eval(problem, false)).isEqualTo(answer)
     }
 
-    @Test
-    fun bracketsTesting() {
-        val problem = "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2"
-        val day = Day18()
-        assertThat(day.doMath(problem)).isEqualTo(13632L)
+    fun part1() {
+        assertThat(Day18().part1()).isEqualTo(29839238838303)
     }
 
+    @ParameterizedTest
+    @MethodSource("advancedMath")
+    fun canPerformAdvancedMathWithBrackets(problem: String, answer: Long) {
+        assertThat(Day18().eval(problem, true)).isEqualTo(answer)
+    }
+
+    fun part2() {
+        assertThat(Day18().part2()).isEqualTo(201376568795521)
+    }
     companion object {
         @JvmStatic
         fun simpleMath(): Stream<Arguments> {
@@ -38,6 +37,16 @@ class Day18Test {
                 Arguments.of("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 12240L),
                 Arguments.of("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632L),
             )
+        }
+        @JvmStatic
+        fun advancedMath(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of("2 * 3 + (4 * 5)", 46L),
+                Arguments.of("5 + (8 * 3 + 9 + 3 * 4 * 3)", 1445L),
+                Arguments.of("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 669060L),
+                Arguments.of("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 23340L),
+            )
+
         }
     }
 }
