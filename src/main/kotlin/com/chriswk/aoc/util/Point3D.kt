@@ -9,14 +9,13 @@ data class Point3D(val x: Int, val y: Int, val z: Int) {
         return Point3D(x * factor, y * factor, z * factor)
     }
 
-    fun neighbours(): Sequence<Point3D> {
-        return sequenceOf(-1, 0, 1).flatMap { x ->
-            sequenceOf(-1, 0, 1).flatMap { y ->
-                sequenceOf(-1, 0, 1).map { z ->
-                    Point3D(x, y, z)
+    val neighbours: List<Point3D> by lazy {
+        (x - 1..x + 1).flatMap { dx ->
+            (y - 1..y + 1).flatMap { dy ->
+                (z - 1..z + 1).mapNotNull { dz ->
+                    Point3D(dx, dy, dz).takeUnless { it == this }
                 }
             }
-        }.filterNot { it == Point3D(0 ,0, 0) }
-            .map { this + it }
+        }
     }
 }

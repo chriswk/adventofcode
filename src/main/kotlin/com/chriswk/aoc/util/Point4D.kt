@@ -9,16 +9,15 @@ data class Point4D(val x: Int, val y: Int, val z: Int, val w: Int) {
         return Point4D(x * factor, y * factor, z * factor, w * factor)
     }
 
-    fun neighbours(): Sequence<Point4D> {
-        return sequenceOf(-1, 0, 1).flatMap { x ->
-            sequenceOf(-1, 0, 1).flatMap { y ->
-                sequenceOf(-1, 0, 1).flatMap { z ->
-                    sequenceOf(-1, 0, 1).map { w ->
-                        Point4D(x, y, z, w)
+    val neighbours: List<Point4D> by lazy {
+        (x - 1..x + 1).flatMap { dx ->
+            (y - 1..y + 1).flatMap { dy ->
+                (z - 1..z + 1).flatMap { dz ->
+                    (w - 1..w + 1).mapNotNull { dw ->
+                        Point4D(dx, dy, dz, dw).takeUnless { it == this }
                     }
                 }
             }
-        }.filterNot { it == Point4D(0, 0, 0, 0) }
-            .map { this + it }
+        }
     }
 }

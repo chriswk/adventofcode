@@ -20,18 +20,15 @@ class Day17: AdventDay(2020, 17) {
     }
 
     fun evaluatePoint(world: World, point: Point3D, currentState: Boolean): Cube {
-        val activeNeighbourCount = point.neighbours().count {
+        val activeNeighbourCount = point.neighbours.count {
             world.getOrDefault(it, false)
         }
-        val newState = when(currentState) {
-            true -> activeNeighbourCount in 2..3
-            false -> activeNeighbourCount == 3
-        }
+        val newState = activeNeighbourCount == 3 || currentState && activeNeighbourCount == 2
         return point to newState
     }
 
     fun evaluateHyperPoint(world: HyperWorld, point: Point4D, currentState: Boolean): HyperCube {
-        val activeNeighbourCount = point.neighbours().count {
+        val activeNeighbourCount = point.neighbours.count {
             world.getOrDefault(it, false)
         }
         val newState = when(currentState) {
@@ -42,10 +39,10 @@ class Day17: AdventDay(2020, 17) {
     }
 
     fun gatherPointsToCheck(world: World): List<Point3D> {
-        return world.entries.filter { it.value }.flatMap { it.key.neighbours() }.distinct().toList()
+        return world.entries.filter { it.value }.flatMap { it.key.neighbours }.distinct().toList()
     }
     fun gatherHyperPointsToCheck(world: HyperWorld): List<Point4D> {
-        return world.entries.filter { it.value }.flatMap { it.key.neighbours() }.distinct()
+        return world.entries.filter { it.value }.flatMap { it.key.neighbours }.distinct()
     }
 
     fun step(world: World): World {
