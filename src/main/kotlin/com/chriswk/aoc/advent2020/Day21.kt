@@ -29,11 +29,13 @@ class Day21: AdventDay(2020, 21) {
 
     fun assignIngredientToAllergen(allergens: Map<String, Set<String>>): Map<String, String> {
         val ingredientToAllergen = mutableMapOf<String, String>()
-        while(ingredientToAllergen.size < allergens.size) {
-            allergens.entries.sortedBy { it.value.size }.forEach { e ->
+        val allergensMutable = allergens.toMutableMap()
+        while(allergensMutable.isNotEmpty()) {
+            allergensMutable.entries.sortedBy { it.value.size }.forEach { e ->
                 val remainingKeys = e.value - ingredientToAllergen.keys
                 if (remainingKeys.size == 1) {
                     ingredientToAllergen[remainingKeys.first()] = e.key
+                    allergensMutable.remove(e.key)
                 }
             }
         }
