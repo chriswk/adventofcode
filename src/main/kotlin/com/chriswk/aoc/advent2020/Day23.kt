@@ -129,15 +129,6 @@ class Node(val value: Long) {
         this.next = node
         return node
     }
-
-    fun insertBefore(node: Node): Node {
-        previous.next = node
-        node.previous = previous
-        node.next = this
-        this.previous = node
-        return node
-    }
-
     override fun toString(): String {
         return "prev: ${previous.value} -> this: ${value} -> next: ${next.value}"
     }
