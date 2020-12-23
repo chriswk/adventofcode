@@ -64,6 +64,7 @@ class Day22Test {
         assertThat(result).isEqualTo(GameState.Player2Win)
         assertThat(day.scoreCards(winningDeck)).isEqualTo(291)
     }
+
     @Test
     @Slow(1000)
     fun part2() {

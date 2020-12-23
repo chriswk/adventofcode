@@ -1,5 +1,7 @@
 package com.chriswk.aoc.advent2017
 
+import com.chriswk.aoc.util.asInt
+
 object Day1 {
     fun partOne(str: String): Int {
         val sum = str.fold(Pair('a', 0)) { (lastChar, count), c ->
@@ -15,9 +17,7 @@ object Day1 {
         }
     }
 
-    fun Char.asInt(): Int {
-        return this.toString().toInt()
-    }
+
 
     fun partTwo(str: String): Int {
         return str.toList().foldInHalf().filter { (first, second) ->

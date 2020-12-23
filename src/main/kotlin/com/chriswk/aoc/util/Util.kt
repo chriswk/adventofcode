@@ -52,7 +52,9 @@ fun <T> List<T>.permutations(): List<List<T>> {
         }
     }
 }
-
+fun Char.asInt(): Int {
+    return this.toString().toInt()
+}
 suspend fun <T> Channel<T>.andSend(msg: T) : Channel<T> = this.also { send(msg) }
 
 fun <T> List<T>.toChannel(capacity: Int = Channel.UNLIMITED): Channel<T> {
