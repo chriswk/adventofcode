@@ -40,3 +40,17 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "11"
     }
 }
+
+jacoco {
+    toolVersion = "0.8.6"
+}
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.isEnabled = true
+        xml.destination = file("$buildDir/reports/jacoco/report.xml")
+    }
+}
