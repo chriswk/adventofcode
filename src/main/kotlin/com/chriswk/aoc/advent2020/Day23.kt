@@ -122,14 +122,6 @@ class Node(val value: Long) {
         return this
     }
 
-    fun jumpAhead(count: Int): Node {
-        return (0.until(count)).fold(this) { node, _ -> node.next }
-    }
-
-    fun jumpBack(count: Int): Node {
-        return (0.until(count)).fold(this) { node, _ -> node.previous }
-    }
-
     fun insertAfter(node: Node): Node {
         next.previous = node
         node.previous = this
