@@ -23,6 +23,9 @@ data class Point2D(val x: Int, val y: Int) {
         return (x - other.x).absoluteValue + (y - other.y).absoluteValue
     }
 
+    val hexNeighbours: List<Point2D> by lazy {
+        HexDirection.values().map { this + it.delta }
+    }
     companion object {
         val ORIGIN = Point2D(0, 0)
     }

@@ -163,3 +163,12 @@ fun String.md5(): String {
 fun toInt(group: MatchGroup?): Int {
     return group?.value?.toInt() ?: throw IllegalStateException("Couldn't parse to value")
 }
+
+enum class HexDirection(val delta: Point2D) {
+    East(Point2D(2, 0)),
+    NorthEast(Point2D(1, 1)),
+    NorthWest(Point2D(-1, 1)),
+    West(Point2D(-2, 0)),
+    SouthWest(Point2D(-1, -1)),
+    SouthEast(Point2D(1,-1))
+}
