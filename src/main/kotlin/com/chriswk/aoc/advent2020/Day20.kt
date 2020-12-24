@@ -2,7 +2,6 @@ package com.chriswk.aoc.advent2020
 
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.Point2D
-import com.chriswk.aoc.util.fileToString
 import com.chriswk.aoc.util.report
 import kotlin.math.sqrt
 
@@ -12,9 +11,6 @@ class Day20 : AdventDay(2020, 20) {
         fun main(args: Array<String>) {
             val day = Day20()
             report {
-                day.part1fmr()
-            }
-            report {
                 day.part1()
             }
             report {
@@ -22,32 +18,47 @@ class Day20 : AdventDay(2020, 20) {
             }
         }
     }
-    fun part1fmr(): Long {
-        val input = "2020/input_20.txt".fileToString()
-        val tiles = parse(input)
-        val image = buildImage(tiles)
-        return cornerProduct(image)
-    }
-    fun parse(input: String): List<Tile> {
-        return input.split("\n\n").map { it.lines() }.map { tile ->
-            val id = tile.first().substringAfter(" ").substringBefore(":").toLong()
-            val bitmap = tile.drop(1).map { it.toCharArray() }.toTypedArray()
-            Tile(id, bitmap)
-        }
+    fun part1(): Long {
+        val tiles = parseInput(inputAsString)
+        val image = createImage(tiles)
+        return image.first().first().id * image.first().last().id *
+                image.last().first().id * image.last().last().id
     }
 
-    fun findTopLeftCorner(tiles: List<Tile>): Tile {
-        return tiles
-            .first { tile -> tile.sharedSideCount(tiles) == 2 }
+    fun part2(): Int {
+        val seaMonsterOffsets = listOf(
+            Point2D(0, 18), Point2D(1, 0), Point2D(1, 5), Point2D(1, 6), Point2D(1, 11), Point2D(1, 12),
+            Point2D(1, 17), Point2D(1, 18), Point2D(1, 19), Point2D(2, 1), Point2D(2, 4), Point2D(2, 7),
+            Point2D(2, 10), Point2D(2, 13), Point2D(2, 16)
+        )
+        val tiles = parseInput(inputAsString)
+        val image = createImage(tiles)
+
+        return imageToSingleTile(tiles, image)
             .orientations()
-            .first {
-                it.isSideShared(Orientation.South, tiles) && it.isSideShared(Orientation.East, tiles)
+            .first { it.maskIfFound(seaMonsterOffsets) }
+            .body
+            .sumBy { row ->
+                row.count { char -> char == '#' }
             }
     }
-    fun buildImage(tiles: List<Tile>): List<List<Tile>> {
-        //Assuming image is square
-        val width = sqrt(tiles.size.toDouble()).toInt()
-        var mostRecentTile: Tile = findTopLeftCorner(tiles)
+
+    private fun imageToSingleTile(tiles: List<Tile>, image: List<List<Tile>>): Tile {
+        val rowsPerTile = tiles.first().body.size
+        val body = image.flatMap { row ->
+            (1 until rowsPerTile - 1).map { y ->
+                row.joinToString("") { it.insetRow(y) }.toCharArray()
+            }
+        }.toTypedArray()
+        return Tile(0, body)
+    }
+    fun cornerProduct(image: List<List<Tile>>): Long {
+        return image.first().first().id * image.first().last().id * image.last().first().id * image.last().last().id
+    }
+
+    fun createImage(tiles: List<Tile>): List<List<Tile>> {
+        val width = sqrt(tiles.count().toFloat()).toInt()
+        var mostRecentTile: Tile = findTopCorner(tiles)
         var mostRecentRowHeader: Tile = mostRecentTile
         return (0 until width).map { row ->
             (0 until width).map { col ->
@@ -56,37 +67,30 @@ class Day20 : AdventDay(2020, 20) {
                         mostRecentTile
                     col == 0 -> {
                         mostRecentRowHeader =
-                            mostRecentRowHeader.findAndOrientNeighbour(Orientation.South, Orientation.North, tiles)
+                            mostRecentRowHeader.findAndOrientNeighbor(Orientation.South, Orientation.North, tiles)
                         mostRecentTile = mostRecentRowHeader
                         mostRecentRowHeader
                     }
                     else -> {
                         mostRecentTile =
-                            mostRecentTile.findAndOrientNeighbour(Orientation.East, Orientation.West, tiles)
+                            mostRecentTile.findAndOrientNeighbor(Orientation.East, Orientation.West, tiles)
                         mostRecentTile
                     }
                 }
             }
         }
     }
-    fun cornerProduct(image: List<List<Tile>>): Long {
-        return image.first().first().id * image.first().last().id * image.last().first().id * image.last().last().id
-    }
-    fun part1(): Long {
-        val tiles = parse(inputAsString)
-        val image = buildImage(tiles)
-        return cornerProduct(image)
-    }
 
-    fun part2(): Long {
-        return 0
-    }
+    fun findTopCorner(tiles: List<Tile>): Tile =
+        tiles
+            .first { tile -> tile.sharedSideCount(tiles) == 2 }
+            .orientations()
+            .first {
+                it.isSideShared(Orientation.South, tiles) && it.isSideShared(Orientation.East, tiles)
+            }
 
-    enum class CardinalDirection {
-        NORTH,
-        SOUTH,
-        WEST,
-        EAST
+    enum class Orientation {
+        North, East, South, West
     }
 
     class Tile(val id: Long, var body: Array<CharArray>) {
@@ -106,7 +110,7 @@ class Day20 : AdventDay(2020, 20) {
                 .filterNot { it.id == id }
                 .any { tile -> tile.hasSide(sideFacing(dir)) }
 
-        fun findAndOrientNeighbour(mySide: Orientation, theirSide: Orientation, tiles: List<Tile>): Tile {
+        fun findAndOrientNeighbor(mySide: Orientation, theirSide: Orientation, tiles: List<Tile>): Tile {
             val mySideValue = sideFacing(mySide)
             return tiles
                 .filterNot { it.id == id }
@@ -146,12 +150,12 @@ class Day20 : AdventDay(2020, 20) {
         fun hasSide(side: String): Boolean =
             side in sides || side in sidesReversed
 
-        fun flip(): Tile {
+        private fun flip(): Tile {
             body = body.map { it.reversed().toCharArray() }.toTypedArray()
             return this
         }
 
-        fun rotateClockwise(): Tile {
+        private fun rotateClockwise(): Tile {
             body = body.mapIndexed { x, row ->
                 row.mapIndexed { y, _ ->
                     body[y][x]
@@ -168,13 +172,16 @@ class Day20 : AdventDay(2020, 20) {
                 Orientation.East -> body.map { row -> row.last() }.joinToString("")
             }
 
-        fun orientToSide(side: String, direction: Orientation) =
+        private fun orientToSide(side: String, direction: Orientation) =
             orientations().first { it.sideFacing(direction) == side }
 
     }
 
-    enum class Orientation {
-        North, East, South, West
-    }
+    fun parseInput(input: String): List<Tile> =
+        input.split("\n\n").map { it.lines() }.map { tileText ->
+            val id = tileText.first().substringAfter(" ").substringBefore(":").toLong()
+            val body = tileText.drop(1).map { it.toCharArray() }.toTypedArray()
+            Tile(id, body)
+        }
 }
 

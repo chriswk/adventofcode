@@ -79,7 +79,7 @@ nearby tickets:
         val tickets = day.parseTickets(input).filter { it.isValid(rules.values.asSequence().flatten()) }
         val r = day.performIntersection(rules, myTicket, tickets)
         val actualMap = day.findMinima(r)
-        assertThat(day.findProductOfDepartureCols(actualMap, myTicket)).isEqualTo(0)
+        assertThat(day.findProductOfDepartureCols(actualMap, myTicket)).isEqualTo(1)
     }
 
     @Test
