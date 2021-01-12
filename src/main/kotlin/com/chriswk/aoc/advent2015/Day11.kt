@@ -35,12 +35,24 @@ class Day11 : AdventDay(2015, 11) {
 
     val x = 'x'
     val invalidChars = setOf('i', 'o', 'l')
+    val invalidCharsAsArray = invalidChars.toCharArray()
     fun String.next(): String {
-        val incr = this[length - 1].next()
-        return if (incr != 'a') {
-            this.substring(0, length - 1) + incr
+        val invalidIndex = this.indexOfAny(invalidCharsAsArray)
+        return if (invalidIndex > -1) {
+            val incr = this[invalidIndex].next()
+            val prefix = this.substring(0, invalidIndex) + incr
+            if (invalidIndex == length - 1) {
+                prefix
+            } else {
+                prefix + this.substring(invalidIndex+1)
+            }
         } else {
-            this.substring(0, length - 1).next() + 'a'
+            val incr = this[length - 1].next()
+            if (incr != 'a') {
+                this.substring(0, length - 1) + incr
+            } else {
+                this.substring(0, length - 1).next() + 'a'
+            }
         }
     }
     fun Char.next(): Char = if (this == 'z') 'a' else {
@@ -48,7 +60,7 @@ class Day11 : AdventDay(2015, 11) {
     }
 
     private fun String.isValidPassword() = this.allValidChars() && this.increasing() && this.pairs()
-    private fun String.allValidChars() = all { it !in setOf('i', 'o', 'l') }
+    private fun String.allValidChars() = all { it !in invalidChars }
     private fun String.increasing() = windowed(3).any { it[0] <= x && it[2] == it[1].next() && it[1] == it[0].next() }
     private fun String.pairs(): Boolean {
         val w = windowed(2).mapIndexed { i, s -> i to s }.filter { (_, d) -> d[0] == d[1] }
