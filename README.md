@@ -10,3 +10,4 @@ Solutions / Implementations
 * [2018](https://github.com/chriswk/adventofcode/tree/main/src/main/kotlin/com/chriswk/aoc/advent2018)
 * [2019](https://github.com/chriswk/adventofcode/tree/main/src/main/kotlin/com/chriswk/aoc/advent2019)
 * [2020](https://github.com/chriswk/adventofcode/tree/main/src/main/kotlin/com/chriswk/aoc/advent2020)
+* [2021](https://github.com/chriswk/adventofcode/tree/main/src/main/kotlin/com/chriswk/aoc/advent2021)
