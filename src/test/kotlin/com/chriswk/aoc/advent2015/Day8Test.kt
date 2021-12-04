@@ -27,7 +27,7 @@ class Day8Test {
             "\x27"
         """.trimIndent().lines()
         val i = day.parseMultiple(input)
-        val answer = i.sumBy { it.first } - i.sumBy { it.second }
+        val answer = i.sumOf { it.first } - i.sumOf { it.second }
         assertThat(answer).isEqualTo(12)
     }
 

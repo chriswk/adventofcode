@@ -2,6 +2,7 @@ package com.chriswk.aoc.advent2021
 
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.report
+import kotlin.math.pow
 
 class Day3 : AdventDay(2021, 3) {
     companion object {
@@ -18,28 +19,14 @@ class Day3 : AdventDay(2021, 3) {
     }
 
 
-    fun epsilon(gamma: String): String {
-        return gamma.map {
-            when (it) {
-                '0' -> '1'
-                '1' -> '0'
-                else -> ""
-            }
-        }.joinToString(separator = "")
-    }
-
-    fun epsilonRate(epsilon: String): Int {
-        return epsilon.toInt(2)
+    fun epsilon(gamma: Int, mask: Int): Int {
+        return gamma xor mask
     }
 
     fun gamma(input: List<String>): String {
         return (0.until(input[0].length)).map { idx ->
             mostUsedBit(input, idx)
         }.joinToString(separator = "")
-    }
-
-    fun gammaRate(gamma: String): Int {
-        return gamma.toInt(2)
     }
 
     fun mostUsedBit(input: List<String>, idx: Int): Char {
@@ -71,7 +58,7 @@ class Day3 : AdventDay(2021, 3) {
     fun co2(input: List<String>): String {
         return (0 until input[0].length).fold(input) { remaining, idx ->
             if (remaining.size == 1) {
-                remaining
+                return remaining.first()
             } else {
                 val toKeep = leastUsedBit(remaining, idx)
                 remaining.filter { it[idx] == toKeep }
@@ -80,17 +67,12 @@ class Day3 : AdventDay(2021, 3) {
 
     }
 
-    fun Char.flip() = when (this) {
-        '0' -> '1'
-        '1' -> '0'
-        else -> this
-    }
-
-
     fun part1(): Int {
-        val gamma = gamma(inputAsLines)
-        val epsilon = epsilon(gamma)
-        return gammaRate(gamma) * epsilonRate(epsilon)
+        val bitCount = inputAsLines[0].length
+        val mask = 2.0.pow(bitCount) - 1
+        val gamma = gamma(inputAsLines).toInt(2)
+        val epsilon = epsilon(gamma, mask.toInt())
+        return gamma * epsilon
     }
 
     fun part2(): Int {

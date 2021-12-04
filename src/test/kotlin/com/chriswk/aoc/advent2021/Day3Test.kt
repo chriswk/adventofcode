@@ -24,12 +24,11 @@ class Day3Test {
     @Test
     fun `Can calculate gamma rate`() {
         assertThat(day.gamma(testInput)).isEqualTo("10110")
-        assertThat(day.gammaRate(day.gamma(testInput))).isEqualTo(22)
     }
 
     @Test
     fun `Can calculate epsilon rate`() {
-        assertThat(day.epsilon("10110")).isEqualTo("01001")
+        assertThat(day.epsilon(0b10110, 0b11111)).isEqualTo(9)
     }
 
     @Test
