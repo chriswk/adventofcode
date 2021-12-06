@@ -22,10 +22,12 @@ class Day5Test {
     @Test
     fun `can parse a line`() {
         val line = Day5.Line(testInput.first())
-        assertThat(line.xStart).isEqualTo(0)
-        assertThat(line.yStart).isEqualTo(9)
-        assertThat(line.xEnd).isEqualTo(5)
-        assertThat(line.yEnd).isEqualTo(9)
+        assertThat(line.start.x).isEqualTo(0)
+        assertThat(line.start.y).isEqualTo(9)
+        assertThat(line.end.x).isEqualTo(5)
+        assertThat(line.end.y).isEqualTo(9)
+        assertThat(line.delta.x).isEqualTo(1)
+        assertThat(line.delta.y).isEqualTo(0)
     }
 
     @Test

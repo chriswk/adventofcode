@@ -3,8 +3,7 @@ package com.chriswk.aoc.advent2021
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.report
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.sign
 
 class Day5 : AdventDay(2021, 5) {
     companion object {
@@ -20,26 +19,7 @@ class Day5 : AdventDay(2021, 5) {
         }
 
         fun Int.diff(other: Int) = abs(this - other)
-        fun diagonals(xMin: Int, yMin: Int, xMax: Int, yMax: Int): Set<Point> {
-            return if (xMin.diff(xMax) != yMin.diff(yMax)) {
-                emptySet()
-            } else {
-                val xRange = if (xMin < xMax) {
-                    xMin..xMax
-                } else {
-                    (0..xMin.diff(xMax)).map { xMin - it }
-                }
-                val yRange = if (yMin < yMax) {
-                    yMin..yMax
-                } else {
-                    (0..(yMin.diff(yMax))).map { yMin - it }
-                }.toList()
 
-                xRange.mapIndexed { idx, x ->
-                    Point(x, yRange[idx])
-                }.toSet()
-            }
-        }
     }
 
     val inputLines = parseInput(inputAsLines)
@@ -52,18 +32,8 @@ class Day5 : AdventDay(2021, 5) {
 
     fun findPoints(lines: List<Line>): Map<Point, Int> {
         return lines.fold(mutableMapOf()) { matches, line ->
-            if (line.isVertical) {
-                line.verticalPoints.forEach {
-                    matches.merge(it, 1) { old, new -> old + new }
-                }
-            } else if (line.isHorizontal) {
-                line.horizontalPoints.forEach {
-                    matches.merge(it, 1) { old, new -> old + new }
-                }
-            } else {
-                line.diagonalRange.forEach {
-                    matches.merge(it, 1) { old, new -> old + new }
-                }
+            line.allPoints.forEach {
+                matches.merge(it, 1) { old, new -> old + new }
             }
             matches
         }
@@ -78,46 +48,43 @@ class Day5 : AdventDay(2021, 5) {
         return input.map { Line(it) }
     }
 
-    fun generatePoints(minX: Int, minY: Int, maxX: Int, maxY: Int): List<Point> {
-        return (minX until maxX).flatMap { x ->
-            (minY until maxY).map { y ->
-                Point(x, y)
-            }
-        }
-    }
 
-    fun findDangerSpots(point: List<Point>, lines: List<Line>): List<Pair<Point, Int>> {
-        return point.map { p ->
-            p to lines.count { it.covers(p) }
-        }
-    }
+    data class Line(val start: Point, val end: Point) {
+        val signX = sign((end.x - start.x).toDouble()).toInt()
+        val signY = sign((end.y - start.y).toDouble()).toInt()
+        val delta = Point(signX, signY)
 
-    data class Line(val xStart: Int, val xEnd: Int, val yStart: Int, val yEnd: Int) {
         constructor(input: String) : this(
-            xStart = input.split("->").first().trim().split(",").first().toInt(),
-            yStart = input.split("->").first().trim().split(",").last().toInt(),
-            xEnd = input.split("->").last().trim().split(",").first().toInt(),
-            yEnd = input.split("->").last().trim().split(",").last().toInt()
+            start = Point(
+                input.split("->").first().trim().split(",").first().toInt(),
+                input.split("->").first().trim().split(",").last().toInt()
+            ),
+            end = Point(
+                input.split("->").last().trim().split(",").first().toInt(),
+                input.split("->").last().trim().split(",").last().toInt()
+            )
         )
 
-        val verticalRange = min(yStart, yEnd)..max(yStart, yEnd)
-        val verticalPoints = verticalRange.map { y -> Point(xStart, y) }
-        val horizontalRange = min(xStart, xEnd)..max(xStart, xEnd)
-        val horizontalPoints = horizontalRange.map { x -> Point(x, yStart) }
-        val diagonalRange: Set<Point> = diagonals(xStart, yStart, xEnd, yEnd)
-        val isVertical = xStart == xEnd
-        val isHorizontal = yStart == yEnd
+        val allPoints: List<Point> =
+            generateSequence(start) { p ->
+                if (p != end) {
+                    p + delta
+                } else {
+                    null
+                }
+            }.toList()
 
 
-        fun covers(point: Point) = if (isVertical) {
-            point.x == xStart && point.y in verticalRange
-        } else if (isHorizontal) {
-            point.y == yStart && point.x in horizontalRange
-        } else {
-            diagonalRange.contains(point)
-        }
+        fun covers(p: Point): Boolean = allPoints.contains(p)
+
+        val isVertical = start.x == end.x
+        val isHorizontal = start.y == end.y
+
     }
 
 
-    data class Point(val x: Int, val y: Int)
+    data class Point(val x: Int, val y: Int) {
+        operator fun minus(other: Point): Point = Point(x - other.x, y - other.y)
+        operator fun plus(other: Point): Point = Point(x + other.x, y + other.y)
+    }
 }
