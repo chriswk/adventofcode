@@ -11,11 +11,16 @@ class Day6: AdventDay(2021, 6) {
         @JvmStatic
         fun main(args: Array<String>) {
             val day = Day6()
-            report {
-                day.part1()
-            }
-            report {
-                day.part2()
+            repeat(10) {
+                println("chris")
+                report {
+                    day.part1()
+                }
+                report {
+                    day.part2()
+                }
+                println("fmr")
+                day.fmr()
             }
         }
         val logger: Logger = LogManager.getLogger()
@@ -44,6 +49,29 @@ class Day6: AdventDay(2021, 6) {
             newTally[8] = zeros
             newTally.merge(6, zeros) { old, new -> old + new } // Insert new sizes
             newTally
+        }
+    }
+
+    fun fmr() {
+        val fishes = inputAsString.split(",").map { it.toLong() }.groupingBy { it }.eachCount()
+        val ar = LongArray(9) { fishes[it.toLong()]?.toLong() ?: 0L }
+        val seq = generateSequence(ar) { it.cycle() }
+
+        report {
+            seq.drop(80).first().sum()
+        }
+        report {
+            seq.drop(256).first().sum()
+        }
+    }
+
+    private fun LongArray.cycle(): LongArray {
+        return LongArray(this.size) { idx ->
+            when(idx) {
+                6 -> this[0] + this[7]
+                8 -> this[0]
+                else -> this[idx+1]
+            }
         }
     }
 
