@@ -10,6 +10,7 @@ import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
 class Util {}
@@ -69,6 +70,12 @@ fun report(f: () -> Number) {
     var ans: Number?
     val timeTaken = measureTimeMillis { ans = f() }
     println("Answer [$ans] - took $timeTaken ms")
+}
+
+fun reportNano(f: () -> Number) {
+    var ans: Number?
+    val timeTaken = measureNanoTime { ans = f() }
+    println("Answer [$ans] - took $timeTaken ns")
 }
 
 fun parseInstructions(instructions: String): IntArray {
