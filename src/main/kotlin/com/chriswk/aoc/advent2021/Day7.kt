@@ -21,6 +21,12 @@ class Day7: AdventDay(2021, 7) {
             reportNano {
                 day.part2()
             }
+            report {
+                day.minimumPositionCost(day.inputCrabs, false)
+            }
+            report {
+                day.minimumPositionCost(day.inputCrabs, true)
+            }
         }
         val logger: Logger = LogManager.getLogger()
     }
