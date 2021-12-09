@@ -45,6 +45,10 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         Pos(x - 1, y + 1), Pos(x, y + 1), Pos(x + 1, y + 1)
     )
 
+    fun cardinalNeighbours(maxX: Int, maxY: Int): List<Pos> {
+        return listOf(north(), south(), west(), east()).filter { it.x >= 0 && it.y >= 0 && it.x < maxX && it.y < maxY }
+    }
+
     fun toIndex(width: Int): Int = width * y + x
 
 }
