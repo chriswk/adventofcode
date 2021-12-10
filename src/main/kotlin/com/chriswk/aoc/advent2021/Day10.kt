@@ -21,21 +21,20 @@ class Day10: AdventDay(2021, 10) {
     }
     fun handleLine(line: String): Pair<ArrayDeque<Char>, Int> {
         val stack = ArrayDeque<Char>()
-        val wrongChars = mutableListOf<Char>()
         line.forEach {
             when(it) {
-                '(', '{', '[', '<' -> stack.addFirst(it)
+                '(', '{', '[', '<' -> stack.addFirst(closers[it]!!)
                 ')', '}', ']', '>' -> {
-                    val expectedClose = closers[stack.firstOrNull()?: ' ']
+                    val expectedClose = stack.firstOrNull()?: ' '
                     if (it == expectedClose) {
                         stack.removeFirst()
                     } else {
-                        wrongChars.add(it)
+                        return stack to errors[it]!!
                     }
                 }
             }
         }
-        return stack to (errors[wrongChars.firstOrNull()] ?: 0)
+        return stack to 0
     }
 
     fun errorScore(lines: List<String>): Int {
@@ -46,7 +45,7 @@ class Day10: AdventDay(2021, 10) {
         val (missing, errors) = handleLine(line)
         return if (errors == 0) {
             missing.fold(0) { soFar, char ->
-                soFar * 5 + completion[closers[char]!!]!!
+                soFar * 5 + completion[char]!!
             }
         } else {
             0
