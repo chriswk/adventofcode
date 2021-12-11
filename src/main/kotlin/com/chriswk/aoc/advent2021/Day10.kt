@@ -19,7 +19,7 @@ class Day10: AdventDay(2021, 10) {
         val closers = mapOf('(' to ')', '{' to '}', '[' to ']', '<' to '>')
         val completion = mapOf(')' to 1, ']' to 2, '}' to 3, '>' to 4)
     }
-    fun handleLine(line: String): Pair<ArrayDeque<Char>, Int> {
+    fun handleLine(line: String): Pair<Long, Int> {
         val stack = ArrayDeque<Char>()
         line.forEach {
             when(it) {
@@ -29,12 +29,12 @@ class Day10: AdventDay(2021, 10) {
                     if (it == expectedClose) {
                         stack.removeFirst()
                     } else {
-                        return stack to errors[it]!!
+                        return 0L to errors[it]!!
                     }
                 }
             }
         }
-        return stack to 0
+        return stack.fold(0L) { soFar, char -> (soFar * 5) + completion[char]!! } to 0
     }
 
     fun errorScore(lines: List<String>): Int {
@@ -42,14 +42,7 @@ class Day10: AdventDay(2021, 10) {
     }
 
     fun completionScore(line: String): Long {
-        val (missing, errors) = handleLine(line)
-        return if (errors == 0) {
-            missing.fold(0) { soFar, char ->
-                soFar * 5 + completion[char]!!
-            }
-        } else {
-            0
-        }
+        return handleLine(line).first
     }
 
     fun completionScores(lines: List<String>): List<Long> {

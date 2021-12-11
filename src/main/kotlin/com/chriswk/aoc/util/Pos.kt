@@ -1,6 +1,5 @@
 package com.chriswk.aoc.util
 
-import java.lang.IllegalArgumentException
 import kotlin.math.pow
 
 data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
@@ -32,7 +31,7 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         return Math.sqrt((other.x - x).toDouble().pow(2) + (other.y - y).toDouble().pow(2))
     }
 
-
+    fun isInGrid(maxX: Int, maxY: Int) = isPositive() && x < maxX && y < maxY
     fun isPositive(): Boolean = x >= 0 && y >= 0
     fun north(): Pos = Pos(x, y - 1)
     fun south(): Pos = Pos(x, y + 1)
@@ -41,7 +40,7 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
 
     fun neighbours(): List<Pos> = listOf(
         Pos(x - 1, y - 1), Pos(x, y - 1), Pos(x + 1, y - 1),
-        Pos(x, y - 1), Pos(x, y + 1),
+        Pos(x - 1, y), Pos(x + 1, y),
         Pos(x - 1, y + 1), Pos(x, y + 1), Pos(x + 1, y + 1)
     )
 
