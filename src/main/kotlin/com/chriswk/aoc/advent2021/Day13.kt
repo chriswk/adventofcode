@@ -18,6 +18,12 @@ class Day13: AdventDay(2021, 13) {
         }
     }
 
+    fun runInstructions(points: Set<Pos>, instructions: List<Instruction>): Set<Pos> {
+        return instructions.fold(points) { prev, fold ->
+            fold(prev, fold)
+        }
+    }
+
     fun fold(points: Set<Pos>, instruction: Instruction): Set<Pos> {
         return points.map { p ->
             when(instruction.alongY) {
@@ -26,6 +32,8 @@ class Day13: AdventDay(2021, 13) {
             }
         }.toSet()
     }
+
+    val inputSet = parse(inputAsLines)
 
     fun printGrid(points: Set<Pos>) {
         val minX = points.minOf { it.x }
@@ -61,10 +69,12 @@ class Day13: AdventDay(2021, 13) {
     }
 
     fun part1(): Int {
-        return 0
+        return fold(inputSet.first, inputSet.second.first()).size
     }
 
     fun part2(): Int {
+        val endResult = runInstructions(inputSet.first, inputSet.second)
+        printGrid(endResult)
         return 0
     }
 

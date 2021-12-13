@@ -1,6 +1,8 @@
 package com.chriswk.aoc.advent2021
 
+import com.chriswk.aoc.util.Pos
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class Day13Test {
@@ -45,11 +47,25 @@ class Day13Test {
     }
 
     @Test
+    fun `Points can be folded correctly`() {
+        val pos = Pos(0, 14)
+        val newPos = pos.foldUp(7)
+        assertThat(newPos.x).isEqualTo(pos.x)
+        assertThat(newPos.y).isEqualTo(0)
+    }
+
+    @Test
+    @Disabled
     fun `Can print`() {
         val (points, instructions) = day.parse(testInput)
         day.printGrid(points)
         println("")
         val newGrid = day.fold(points, instructions.first())
         day.printGrid(newGrid)
+    }
+
+    @Test
+    fun `Part 1`() {
+        assertThat(day.part1()).isEqualTo(607)
     }
 }

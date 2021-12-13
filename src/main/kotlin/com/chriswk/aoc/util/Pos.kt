@@ -14,7 +14,9 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
 
     fun foldLeft(onPoint: Int): Pos {
         return if (x > onPoint) {
-            copy(x = x - ((x - onPoint) * 2))
+            val distance = x - onPoint
+            val delta = distance * 2
+            copy(x = x - delta)
         } else {
             this
         }
@@ -22,7 +24,9 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
 
     fun foldUp(onPoint: Int): Pos {
         return if (y > onPoint) {
-            copy(y = y - ((y - onPoint) + 2))
+            val distance = y - onPoint
+            val delta = distance * 2
+            copy(y = y - delta)
         } else {
             this
         }
