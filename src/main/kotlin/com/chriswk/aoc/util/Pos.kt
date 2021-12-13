@@ -12,6 +12,21 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         }
     }
 
+    fun foldLeft(onPoint: Int): Pos {
+        return if (x > onPoint) {
+            copy(x = x - ((x - onPoint) * 2))
+        } else {
+            this
+        }
+    }
+
+    fun foldUp(onPoint: Int): Pos {
+        return if (y > onPoint) {
+            copy(y = y - ((y - onPoint) + 2))
+        } else {
+            this
+        }
+    }
     fun next(move: Char?): Pos {
         return when (move) {
             null -> this
