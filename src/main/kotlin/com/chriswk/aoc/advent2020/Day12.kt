@@ -4,7 +4,6 @@ import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.advent2019.Robot
 import com.chriswk.aoc.util.Point2D
 import com.chriswk.aoc.util.Pos
-import com.chriswk.aoc.util.plus
 import com.chriswk.aoc.util.report
 import kotlin.math.E
 

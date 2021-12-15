@@ -68,9 +68,11 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
     }
 
     fun toIndex(width: Int): Int = width * y + x
+    operator fun plus(other: Pos): Pos {
+        return Pos(this.x + other.x, this.y + other.y)
+    }
+    operator fun minus(other: Pos): Pos {
+        return Pos(this.x - other.x, this.y - other.y)
+    }
 
-}
-
-operator fun Pos.plus(other: Pos): Pos {
-    return Pos(this.x + other.x, this.y + other.y)
 }
