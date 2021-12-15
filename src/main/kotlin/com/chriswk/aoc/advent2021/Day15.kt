@@ -70,9 +70,9 @@ class Day15: AdventDay(2021, 15) {
     }
 
     private val riskComparator: Comparator<Pair<Pos, Int>> =
-        Comparator<Pair<Pos, Int>> { o1, o2 -> o1!!.second.compareTo(o2!!.second) }
+        Comparator { o1, o2 -> o1!!.second.compareTo(o2!!.second) }
 
-    fun aStar(riskMap: Map<Pos, Int>, start: Pos, target: Pos, maxX: Int, maxY: Int): Map<Pos, Int> {
+    private fun aStar(riskMap: Map<Pos, Int>, start: Pos, target: Pos, maxX: Int, maxY: Int): Map<Pos, Int> {
         val accumulatedRiskMap: MutableMap<Pos, Int> = mutableMapOf(start to 0)
         val q = PriorityQueue(riskComparator)
         q.add(start to 0)
