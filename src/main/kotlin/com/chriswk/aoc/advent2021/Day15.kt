@@ -32,7 +32,7 @@ class Day15: AdventDay(2021, 15) {
     fun lowestRisk(riskMap: Map<Pos, Int>, start: Pos, end: Pos): Int {
         val maxX = riskMap.maxOf { it.key.x } + 1
         val maxY = riskMap.maxOf { it.key.y } + 1
-        return aStar(riskMap, start, end, maxX = maxX, maxY = maxY)[end]!!
+        return dijkstra(riskMap, start, end, maxX = maxX, maxY = maxY)[end]!!
     }
 
     fun expandMap(riskMap: Map<Pos, Int>, times: Int = 4): Map<Pos, Int> {
@@ -72,7 +72,7 @@ class Day15: AdventDay(2021, 15) {
     private val riskComparator: Comparator<Pair<Pos, Int>> =
         Comparator { o1, o2 -> o1!!.second.compareTo(o2!!.second) }
 
-    private fun aStar(riskMap: Map<Pos, Int>, start: Pos, target: Pos, maxX: Int, maxY: Int): Map<Pos, Int> {
+    private fun dijkstra(riskMap: Map<Pos, Int>, start: Pos, target: Pos, maxX: Int, maxY: Int): Map<Pos, Int> {
         val accumulatedRiskMap: MutableMap<Pos, Int> = mutableMapOf(start to 0)
         val q = PriorityQueue(riskComparator)
         q.add(start to 0)

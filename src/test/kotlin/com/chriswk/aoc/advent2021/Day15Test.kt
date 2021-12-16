@@ -120,4 +120,15 @@ class Day15Test {
     fun `Part 2`() {
         assertThat(day.part2()).isEqualTo(2864)
     }
+
+    @Test
+    fun `min risk through hard map`() {
+        val hardMap = """
+            19999
+            19111
+            11191
+        """.trimIndent()
+        val riskMap = day.buildRiskMap(hardMap.lines())
+        assertThat(day.lowestRisk(riskMap, Pos(0, 0), Pos(4, 2))).isEqualTo(8)
+    }
 }
