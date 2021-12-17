@@ -12,6 +12,10 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         }
     }
 
+    fun seq(startingVel: Pos) = generateSequence(this to startingVel) { (pos, velocity) ->
+        (pos + velocity) to velocity.copy(x = maxOf(0, velocity.x - 1), y = velocity.y - 1)
+    }
+
     fun foldLeft(onPoint: Int): Pos {
         return if (x > onPoint) {
             val distance = x - onPoint

@@ -42,4 +42,14 @@ class Day16Test {
     fun `Part 2`() {
         assertThat(day.part2()).isEqualTo(834151779165)
     }
+
+    @Test
+    fun `Literal over 4 billion`() {
+        val f = day.hexToBits("699AC25FCC200")
+        val (packet, _) = day.parsePacket(f)
+        assert(packet is Day16.Literal)
+        if (packet is Day16.Literal) {
+            assertThat(packet.value).isEqualTo(5000000000)
+        }
+    }
 }
