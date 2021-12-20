@@ -4,6 +4,9 @@ import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.Pos
 import com.chriswk.aoc.util.report
 import com.chriswk.aoc.util.reportNano
+import kotlin.math.sign
+import kotlin.system.measureNanoTime
+import kotlin.system.measureTimeMillis
 
 class Day17: AdventDay(2021, 17) {
     companion object {
@@ -16,6 +19,15 @@ class Day17: AdventDay(2021, 17) {
             report {
                 day.part2()
             }
+
+            val avgPart1 = (0.until(10)).map {
+                measureNanoTime { day.part1() }
+            }.average()
+            val avgPart2 = (0.until(10)).map {
+                measureTimeMillis { day.part2() }
+            }.average()
+            println("Part 1 average over 10 runs: $avgPart1 ns")
+            println("Part 2 average over 10 runs: $avgPart2 ms")
         }
         val targetRegex = """target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)..(-?\d+)""".toRegex()
     }
@@ -31,7 +43,7 @@ class Day17: AdventDay(2021, 17) {
             return (seqX zip seqY).any { it in target }
         }
 
-        private fun seqX() = generateSequence(0 to x) { (posX, velX) -> posX + velX to maxOf(0, velX - 1) }
+        private fun seqX() = generateSequence(0 to x) { (posX, velX) -> posX + velX to (velX - velX.sign) }
 
         private fun seqY() = generateSequence(0 to y) { (posY, velY) -> posY + velY to velY - 1 }
     }

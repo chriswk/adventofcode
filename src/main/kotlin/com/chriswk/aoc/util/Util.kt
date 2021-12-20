@@ -171,6 +171,8 @@ fun toInt(group: MatchGroup?): Int {
     return group?.value?.toInt() ?: throw IllegalStateException("Couldn't parse to value")
 }
 
+fun <T> Collection<T>.pairs(): List<Pair<T, T>> = this.flatMapIndexed { index, a -> this.drop(index).map { b -> a to b }}
+
 enum class HexDirection(val delta: Point2D) {
     East(Point2D(2, 0)),
     NorthEast(Point2D(1, 1)),
