@@ -19,4 +19,14 @@ class Day21Test {
         assertThat(winner.p2.score).isEqualTo(745)
         assertThat(winner.rolls).isEqualTo(993)
     }
+
+    @Test
+    fun `Part 1`() {
+        assertThat(day.part1()).isEqualTo(805932)
+    }
+
+    @Test
+    fun `Part 2`() {
+        assertThat(day.part2()).isEqualTo(133029050096658)
+    }
 }

@@ -68,8 +68,44 @@ class Day21: AdventDay(2021, 21) {
         }
     }
 
-    fun part2(): Int {
-        return 0
+    fun part2(): Long {
+        val players = inputAsLines.map { Player(it) }
+        return Score(players[0].startingPosition, players[1].startingPosition, 0, 0).let { p -> maxOf(p.first, p.second) }
+    }
+
+    data class LongPair(val first: Long, val second: Long) {
+        override fun toString(): String = "($first, $second)"
+    }
+
+    infix fun Long.to(other: Long): LongPair = LongPair(this, other)
+
+    private object Score {
+        private val dice = sequence {
+            for (i in 1..3) for (j in 1..3) for (k in 1..3) yield(i + j + k)
+        }.groupingBy { it }.eachCount()
+        private val x = LongArray(44100)
+        private val y = LongArray(44100)
+
+        operator fun invoke(player1: Int, player2: Int, score1: Int, score2: Int): LongPair {
+            val i = player1 + 10 * player2 + 100 * score1 + 2100 * score2 - 11
+            if (x[i] == 0L && y[i] == 0L) {
+                var x1 = 0L
+                var y1 = 0L
+                for ((d, n) in dice) {
+                    val play = (player1 + d - 1) % 10 + 1
+                    if (score1 + play < 21) {
+                        val (x2, y2) = this(player2, play, score2, score1 + play)
+                        x1 += n * y2
+                        y1 += n * x2
+                    } else {
+                        x1 += n
+                    }
+                }
+                x[i] = x1
+                y[i] = y1
+            }
+            return LongPair(x[i], y[i])
+        }
     }
 
 }
