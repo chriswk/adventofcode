@@ -26,8 +26,7 @@ class Day20Test {
     }
     @Test
     fun `Rerun enhance`() {
-        val p = day.parseInput(testInput)
-        val newScanner = p.enhance().enhance()
-        assertThat(newScanner.findLitPixels()).isEqualTo(35)
+        val enhanced = day.enhance(testInput, 2)
+        assertThat(enhanced.count { it.value }).isEqualTo(35)
     }
 }

@@ -61,11 +61,17 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
     fun west(): Pos = Pos(x - 1, y)
     fun east(): Pos = Pos(x + 1, y)
 
-    fun neighbours(): List<Pos> = listOf(
+    fun neighbours(includeSelf: Boolean = false): List<Pos> = listOf(
         Pos(x - 1, y - 1), Pos(x, y - 1), Pos(x + 1, y - 1),
-        Pos(x - 1, y), Pos(x + 1, y),
+        Pos(x - 1, y), Pos(x, y), Pos(x + 1, y),
         Pos(x - 1, y + 1), Pos(x, y + 1), Pos(x + 1, y + 1)
-    )
+    ).filter {
+        if (includeSelf) {
+            true
+        } else {
+            it != this
+        }
+    }
 
     fun cardinalNeighbours(maxX: Int, maxY: Int): List<Pos> {
         return listOf(north(), south(), west(), east()).filter { it.x >= 0 && it.y >= 0 && it.x < maxX && it.y < maxY }
