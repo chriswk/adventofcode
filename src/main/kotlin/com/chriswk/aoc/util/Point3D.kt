@@ -2,9 +2,23 @@ package com.chriswk.aoc.util
 
 import kotlin.math.absoluteValue
 
-data class Point3D(val x: Int, val y: Int, val z: Int) {
+data class Point3D(val x: Int, val y: Int, val z: Int): Comparable<Point3D> {
     operator fun plus(other: Point3D): Point3D {
         return Point3D(x + other.x, y + other.y, z + other.z)
+    }
+
+    override fun compareTo(other: Point3D): Int {
+        val zCmp = z.compareTo(other.z)
+        return if (zCmp == 0) {
+            val yCmp = y.compareTo(other.y)
+            if (yCmp == 0) {
+                x.compareTo(other.x)
+            } else {
+                yCmp
+            }
+        } else {
+            zCmp
+        }
     }
 
     operator fun minus(other: Point3D): Point3D {
@@ -13,6 +27,22 @@ data class Point3D(val x: Int, val y: Int, val z: Int) {
 
     operator fun times(factor: Int): Point3D {
         return Point3D(x * factor, y * factor, z * factor)
+    }
+
+    fun min(other: Point3D): Point3D {
+        return if (other < this) {
+            other
+        } else {
+            this
+        }
+    }
+
+    fun max(other: Point3D): Point3D {
+        return if (other > this) {
+            other
+        } else {
+            this
+        }
     }
 
     infix fun manhattan(other: Point3D): Int {

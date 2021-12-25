@@ -181,3 +181,12 @@ enum class HexDirection(val delta: Point2D) {
     SouthWest(Point2D(-1, -1)),
     SouthEast(Point2D(1,-1))
 }
+
+infix fun IntRange.intersects(other: IntRange): Boolean =
+    first <= other.last && last >= other.first
+
+infix fun IntRange.intersect(other: IntRange): IntRange =
+    maxOf(first, other.first)..minOf(last, other.last)
+
+fun IntRange.size(): Int =
+    last - first + 1
