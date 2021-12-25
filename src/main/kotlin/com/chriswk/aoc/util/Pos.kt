@@ -57,9 +57,21 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
     fun isInGrid(maxX: Int, maxY: Int) = isPositive() && x < maxX && y < maxY
     fun isPositive(): Boolean = x >= 0 && y >= 0
     fun north(): Pos = Pos(x, y - 1)
-    fun south(): Pos = Pos(x, y + 1)
+    fun south(maxY: Int = Int.MAX_VALUE): Pos {
+        return if (y + 1 < maxY) {
+            Pos(x, y + 1)
+        } else {
+            Pos(x, 0)
+        }
+    }
     fun west(): Pos = Pos(x - 1, y)
-    fun east(): Pos = Pos(x + 1, y)
+    fun east(maxX: Int = Int.MAX_VALUE): Pos {
+        return if (x + 1 < maxX) {
+            Pos(x + 1, y)
+        } else {
+            Pos(0, y)
+        }
+    }
 
     fun neighbours(includeSelf: Boolean = false): List<Pos> = listOf(
         Pos(x - 1, y - 1), Pos(x, y - 1), Pos(x + 1, y - 1),
