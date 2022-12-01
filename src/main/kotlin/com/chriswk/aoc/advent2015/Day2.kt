@@ -19,11 +19,11 @@ class Day2 : AdventDay(2015, 2) {
     }
 
     fun part1(): Int {
-        return inputAsLines.map { Gift.fromSpec(it) }.sumBy { it.wrappingPaper }
+        return inputAsLines.map { Gift.fromSpec(it) }.sumOf { it.wrappingPaper }
     }
 
     fun part2(): Int {
-        return inputAsLines.map { Gift.fromSpec(it) }.sumBy { it.ribbon() }
+        return inputAsLines.map { Gift.fromSpec(it) }.sumOf { it.ribbon() }
     }
 
     data class Gift(val length: Int, val width: Int, val height: Int) {

@@ -19,7 +19,7 @@ class Day8: AdventDay(2020, 8) {
 
     fun parseInstruction(line: String): Instruction {
         val (op, value) = line.split(" ")
-        return Instruction(Op.valueOf(op.toUpperCase()), value.replace("+", "").toInt())
+        return Instruction(Op.valueOf(op.uppercase()), value.replace("+", "").toInt())
     }
 
     fun buildInstructions(input: List<String>): Array<Instruction> {

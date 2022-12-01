@@ -15,7 +15,7 @@ class Day6(val orbits: List<String>) {
         }
     }
 
-    fun checksum(): Int = parents.keys.sumBy { pathTo(it).size - 1 }
+    fun checksum(): Int = parents.keys.sumOf { pathTo(it).size - 1 }
     fun pathTo(child: String, path: MutableList<String> = mutableListOf(child)): List<String> {
         return parents[child]?.let { parent ->
             path.add(parent)

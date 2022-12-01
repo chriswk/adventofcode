@@ -38,7 +38,7 @@ class Day20 : AdventDay(2020, 20) {
             .orientations()
             .first { it.maskIfFound(seaMonsterOffsets) }
             .body
-            .sumBy { row ->
+            .sumOf { row ->
                 row.count { char -> char == '#' }
             }
     }

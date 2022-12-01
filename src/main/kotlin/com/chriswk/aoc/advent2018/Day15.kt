@@ -24,7 +24,7 @@ object Day15 {
     fun part1(input: List<String>): Int {
         val (gameState, players) = parseInput(input)
         val (rounds, played) = simulate(players, gameState)
-        val sum = played.sumBy { it.hitPoints }
+        val sum = played.sumOf { it.hitPoints }
         println("Rounds $rounds - Sum: ${sum}")
         return rounds * sum
     }
@@ -47,7 +47,7 @@ object Day15 {
             survivingElves = result.second.count { it.faction == Faction.Elf }
             attackPower++
         }
-        val totalHp = result.second.sumBy { it.hitPoints }
+        val totalHp = result.second.sumOf { it.hitPoints }
         println("${result.first} - ${totalHp}")
         return result.first * totalHp
     }

@@ -54,7 +54,7 @@ object Day7 {
     }
 
     fun Char.toTime(): Int {
-        return this.toInt() - 4
+        return this.code - 4
     }
 
     tailrec fun findPath(requirements: Map<Char, Set<Char>>, soFar: String = ""): String {

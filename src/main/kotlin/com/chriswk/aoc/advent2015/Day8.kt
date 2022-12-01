@@ -50,13 +50,13 @@ class Day8 : AdventDay(2015, 8) {
 
     fun part1(): Int {
         val i = parseMultiple(inputAsLines)
-        return i.sumBy { it.first - it.second }
+        return i.sumOf { it.first - it.second }
     }
 
     val quotes = Regex("""(")|(\\)""")
     fun part2(): Int {
         val i = parseMultiplePart2(inputAsLines)
-        return i.sumBy { it.second.length - it.first.length }
+        return i.sumOf { it.second.length - it.first.length }
     }
 
 }

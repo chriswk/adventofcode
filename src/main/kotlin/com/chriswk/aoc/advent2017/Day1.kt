@@ -22,7 +22,7 @@ object Day1 {
     fun partTwo(str: String): Int {
         return str.toList().foldInHalf().filter { (first, second) ->
             first == second
-        }.sumBy { (first, _) ->
+        }.sumOf { (first, _) ->
             first.asInt() * 2
         }
     }

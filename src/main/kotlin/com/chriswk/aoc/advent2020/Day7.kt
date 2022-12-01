@@ -63,7 +63,7 @@ class Day7: AdventDay(2020, 7) {
     fun findHowManyBags(graph: Map<String, List<ColoredBag>>, color: String): Int {
         val children = graph[color] ?: emptyList()
         return if (children.isNotEmpty()) {
-            1 + children.sumBy { it.second * findHowManyBags(graph, it.first) }
+            1 + children.sumOf { it.second * findHowManyBags(graph, it.first) }
         } else {
             1
         }

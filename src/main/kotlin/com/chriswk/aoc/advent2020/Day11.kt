@@ -66,7 +66,7 @@ class Day11 : AdventDay(2020, 11) {
 typealias Seats = Array<CharArray>
 
 operator fun Seats.contains(seat: Seat) = seat.first in this.indices && seat.second in this.first().indices
-fun Seats.occupied() = this.sumBy { row -> row.count { it == '#' } }
+fun Seats.occupied() = this.sumOf { row -> row.count { it == '#' } }
 fun Seats.next(tolerance: Int, countFunction: (Seats, Seat) -> Int): Seats {
     return this.mapIndexed { x, row ->
         row.mapIndexed { y, spot ->

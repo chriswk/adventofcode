@@ -42,7 +42,7 @@ class Day9: AdventDay(2015, 9) {
     }
 
     fun shortestDistance(distances: Map<Distance, Int>, journeys: List<List<String>>): Int {
-         return journeys.minOf { totalDistance(distances, it, 0) } ?: 9999
+         return journeys.minOf { totalDistance(distances, it, 0) }
     }
 
     fun longestDistance(distances: Map<Distance, Int>, journeys: List<List<String>>): Int {

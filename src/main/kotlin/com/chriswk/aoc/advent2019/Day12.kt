@@ -21,7 +21,7 @@ class Day12 : AdventDay(2019, 12) {
         val locations = parseLocations(inputAsLines)
         val simulator = Simulator(locations)
         simulator.step(1000)
-        return simulator.moons.sumBy { it.totalEnergy() }
+        return simulator.moons.sumOf { it.totalEnergy() }
     }
 
     fun part2(): Long {

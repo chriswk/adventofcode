@@ -45,7 +45,7 @@ class Day16 : AdventDay(2020, 16) {
     }
 
     fun findProductOfDepartureCols(placements: Map<String, Int>, ticket: Ticket): Long {
-        return placements.entries.filter { it.key.startsWith("departure") }.map { (k, v) ->
+        return placements.entries.filter { it.key.startsWith("departure") }.map { (_k, v) ->
             ticket.numbers[v]
         }.product()
     }

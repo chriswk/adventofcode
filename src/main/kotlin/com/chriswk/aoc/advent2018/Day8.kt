@@ -25,7 +25,7 @@ object Day8 {
     }
 
     data class Node(val children: List<Node>, val metaData: List<Int>) {
-        val sumOfMetaData: Int = metaData.sum() + children.sumBy { it.sumOfMetaData }
+        val sumOfMetaData: Int = metaData.sum() + children.sumOf { it.sumOfMetaData }
         fun part2(): Int {
             return if (children.isEmpty()) {
                 metaData.sum()

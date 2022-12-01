@@ -5,7 +5,7 @@ import com.chriswk.aoc.util.infiniteCycle
 object Day1 {
 
     fun partOne(input: List<String>): Int {
-        return input.asSequence().sumBy { it.toInt() }
+        return input.asSequence().sumOf { it.toInt() }
     }
 
     fun partTwo(input: List<String>): Int {

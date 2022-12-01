@@ -58,7 +58,7 @@ class Day21: AdventDay(2020, 21) {
     fun answerPart1(input: List<String>, allergens: Map<String, String>): Int {
         return input.map { line ->
             line.substringBefore("(").trim().split(" ")
-        }.sumBy { countAppearences(allergens.keys, it) }
+        }.sumOf { countAppearences(allergens.keys, it) }
     }
 
     fun answerPart2(allergens: Map<String, String>): String {

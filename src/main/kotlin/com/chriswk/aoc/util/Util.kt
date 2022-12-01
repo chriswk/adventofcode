@@ -59,7 +59,7 @@ fun Char.asInt(): Int {
 suspend fun <T> Channel<T>.andSend(msg: T) : Channel<T> = this.also { send(msg) }
 
 fun <T> List<T>.toChannel(capacity: Int = Channel.UNLIMITED): Channel<T> {
-    return Channel<T>(capacity).also { this.forEach { e -> it.offer(e) }}
+    return Channel<T>(capacity).also { this.forEach { e -> it.trySend(e) }}
 }
 fun reportableString(f: () -> String) {
     var ans: String?

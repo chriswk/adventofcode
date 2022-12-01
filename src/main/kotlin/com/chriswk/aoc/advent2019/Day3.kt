@@ -53,7 +53,7 @@ class Day3 : AdventDay(2019, 3) {
 }
 
 data class Instruction(val d: Direction, val c: Int) {
-    constructor(code: String) : this(Direction.valueOf(code.first().toUpperCase().toString()), code.drop(1).toInt())
+    constructor(code: String) : this(Direction.valueOf(code.first().uppercaseChar().toString()), code.drop(1).toInt())
 }
 
 
