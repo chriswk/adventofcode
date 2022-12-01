@@ -93,7 +93,7 @@ class Day16 : AdventDay(2021, 16) {
             }
             else -> {
                 val (lengthTypeBits, afterLengthType) = afterTypeId.splitAt(1)
-                val lengthType = lengthTypeBits.first()
+                val lengthType = if (lengthTypeBits.isEmpty()) { false } else { lengthTypeBits.first() }
                 if (lengthType) {
                     val (numberBits, remainder) = afterLengthType.splitAt(11)
                     val numberOfBits = toLong(numberBits)
