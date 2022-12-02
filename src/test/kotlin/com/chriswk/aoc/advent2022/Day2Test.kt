@@ -18,7 +18,7 @@ class Day2Test {
     }
     @Test
     fun should_calculate_score_correctly() {
-        assertThat(day2.parseInput(testInput.lines()).sumOf { it.score() }).isEqualTo(15)
+        assertThat(day2.parseInput(testInput.lines()).sumOf { it.score }).isEqualTo(15)
     }
 
     @Test
@@ -34,7 +34,7 @@ class Day2Test {
     }
     @Test
     fun should_calculate_score_for_part_2_correctly() {
-        assertThat(day2.parseInputPart2(testInput.lines()).sumOf { it.score() }).isEqualTo(12)
+        assertThat(day2.parseInputPart2(testInput.lines()).sumOf { it.score }).isEqualTo(12)
     }
 
     @Test

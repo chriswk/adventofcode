@@ -18,72 +18,31 @@ class Day2 : AdventDay(2022, 2) {
     }
 
     enum class Play(val score: Int) {
-        Rock(1) {
-            override fun win(): Play {
-                return Paper
-            }
+        Rock(1),
+        Paper(2),
+        Scissors(3);
 
-            override fun lose(): Play {
-                return Scissors
+        fun win(): Play {
+            return when(this) {
+                Rock -> Scissors
+                Paper -> Rock
+                Scissors -> Paper
             }
+        }
 
-            override fun draw(): Play {
-                return Rock
+        fun lose(): Play {
+            return when(this) {
+                Rock -> Paper
+                Paper -> Scissors
+                Scissors -> Rock
             }
-        },
-        Paper(2) {
-            override fun win(): Play {
-                return Scissors
-            }
+        }
 
-            override fun lose(): Play {
-                return Rock
-            }
-
-            override fun draw(): Play {
-                return Paper
-            }
-        },
-        Scissors(3) {
-            override fun win(): Play {
-                return Rock
-            }
-
-            override fun lose(): Play {
-                return Paper
-            }
-
-            override fun draw(): Play {
-                return Scissors
-            }
-        };
-        abstract fun win(): Play
-        abstract fun lose(): Play
-        abstract fun draw(): Play
     }
 
     data class Round(val opponent: Play, val player: Play) {
-        fun score(): Int {
-            return player.score + when (opponent) {
-                Play.Rock -> when (player) {
-                    Play.Rock -> 3
-                    Play.Paper -> 6
-                    Play.Scissors -> 0
-                }
-
-                Play.Scissors -> when (player) {
-                    Play.Rock -> 6
-                    Play.Scissors -> 3
-                    Play.Paper -> 0
-                }
-
-                Play.Paper -> when (player) {
-                    Play.Rock -> 0
-                    Play.Scissors -> 6
-                    Play.Paper -> 3
-                }
-            }
-        }
+        private val outcomeValue: Int = if (opponent == player) { 3 } else if (player.win() == opponent) { 6 } else { 0 }
+        val score: Int = player.score + outcomeValue
 
         companion object {
             fun fromLine(line: String): Round {
@@ -112,9 +71,9 @@ class Day2 : AdventDay(2022, 2) {
                     else -> throw IllegalStateException("Don't know how to interpret opponent state")
                 }
                 val player = when (playerChoice) {
-                    "Y" -> opponent.draw()
-                    "X" -> opponent.lose()
-                    "Z" -> opponent.win()
+                    "Y" -> opponent
+                    "X" -> opponent.win()
+                    "Z" -> opponent.lose()
                     else -> throw IllegalStateException("Don't know how to interpret player state")
                 }
                 return Round(opponent, player)
@@ -131,10 +90,10 @@ class Day2 : AdventDay(2022, 2) {
     }
 
     fun part1(): Int {
-        return parseInput(inputAsLines).sumOf { it.score() }
+        return parseInput(inputAsLines).sumOf { it.score }
     }
 
     fun part2(): Int {
-        return parseInputPart2(inputAsLines).sumOf { it.score() }
+        return parseInputPart2(inputAsLines).sumOf { it.score }
     }
 }

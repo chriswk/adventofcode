@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class Day14Test {
+    val day = Day14()
     @Test
     fun `Can read input format for single reindeer`() {
         val input = """Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds."""
@@ -43,7 +44,12 @@ class Day14Test {
 
     @Test
     fun `Part 1`() {
-        assertThat(Day14().part1()).isEqualTo(2660)
+        assertThat(day.part1()).isEqualTo(2660)
+    }
+
+    @Test
+    fun `Part 2`() {
+        assertThat(day.part2()).isEqualTo(1256)
     }
     
 }
