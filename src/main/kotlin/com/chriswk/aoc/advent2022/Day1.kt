@@ -16,17 +16,17 @@ class Day1: AdventDay(2022, 1) {
         }
     }
 
+
     val inputAsInts = parseInput(inputAsLines)
 
-
     fun parseInput(input: List<String>): List<Int> {
-        return input.fold((mutableListOf<Int>() to mutableListOf<Int>())) { (elves, elf), e ->
+        return input.fold((mutableListOf<Int>() to 0)) { (elves, elf), e ->
             if (e == "") {
-                elves.add(elf.sum())
-                elves to mutableListOf()
+                elves.add(elf)
+                elves to 0
             } else {
-                elf.add(e.toInt(10))
-                elves to elf
+
+                elves to elf + e.toInt(10)
             }
         }.first.toList()
     }
