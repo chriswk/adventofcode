@@ -26,7 +26,7 @@ class Day3: AdventDay(2022, 3) {
 
     fun findIntersectionPriorities(input: String): List<Int> {
         val half = input.length / 2
-        val (firstCompartment, secondCompartment) = input.substring(0, half).toCharArray() to input.substring(half).toCharArray().toSet()
+        val (firstCompartment, secondCompartment) = input.chunked(half).map { it.toSet() }
         return firstCompartment.intersect(secondCompartment).map { priorityMap[it]!! }
     }
 
@@ -35,7 +35,7 @@ class Day3: AdventDay(2022, 3) {
     }
     fun badge(list: List<String>): Set<Char> {
         val (elf, elf2, elf3) = list
-        return elf.toCharArray().intersect(elf2.toCharArray().toSet()).intersect(elf3.toCharArray().toSet())
+        return elf.toSet().intersect(elf2.toSet()).intersect(elf3.toSet())
     }
 
     fun badgeSum(badges: List<String>): Int {
