@@ -38,8 +38,8 @@ class Day14Test {
         """.trimIndent().lines().map { Day14.Reindeer(it) }
         val day = Day14()
         val leaderboard = day.leaderBoardAfterSeconds(testInput, 140)
-        assertThat(leaderboard.values).containsExactly(139, 1)
-        assertThat(day.scoreByLeaderAtSecond(testInput, 1000)).isEqualTo(688)
+        assertThat(leaderboard.values).containsExactly(1, 139)
+        assertThat(day.scoreByLeaderAtSecond(testInput, 1000)).isEqualTo(689)
     }
 
     @Test
