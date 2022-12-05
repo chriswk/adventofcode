@@ -3,6 +3,7 @@ package com.chriswk.aoc.advent2022
 import com.chriswk.aoc.AdventDay
 import com.chriswk.aoc.util.intersects
 import com.chriswk.aoc.util.report
+import com.chriswk.aoc.util.wraps
 
 class Day4: AdventDay(2022, 4) {
     companion object {
@@ -37,14 +38,7 @@ class Day4: AdventDay(2022, 4) {
 
     fun overlaps(elves: Pair<IntRange, IntRange>): Boolean {
         val (elf1, elf2) = elves
-
-        return if (elf1.first < elf2.first) {
-            elf1.last >= elf2.last
-        } else if (elf1.first > elf2.first) {
-            elf2.last >= elf1.last
-        } else {
-            true
-        }
+        return elf1.wraps(elf2) || elf2.wraps(elf1)
     }
 
     fun part1(): Int {

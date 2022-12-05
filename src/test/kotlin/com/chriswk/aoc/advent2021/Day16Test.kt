@@ -21,7 +21,7 @@ class Day16Test {
     @Test
     fun `Can parse example input`() {
         val input = day.hexToBits("8A004A801A8002F478")
-        val (packet, remainder) = day.parsePacket(input)
+        val (packet, _) = day.parsePacket(input)
         assertThat(day.sumVersion(packet)).isEqualTo(16)
     }
 
