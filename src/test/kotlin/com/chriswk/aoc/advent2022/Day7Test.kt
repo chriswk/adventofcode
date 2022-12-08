@@ -56,4 +56,9 @@ class Day7Test {
         val tree = day.parseCommands(testInput.lines())
         assertThat(day.candidateSize(tree.values.map { it.fileSize() }, 70000000, 30000000)).isEqualTo(24933642L)
     }
+
+    @Test
+    fun part2() {
+        assertThat(day.part2()).isEqualTo(1544176)
+    }
 }

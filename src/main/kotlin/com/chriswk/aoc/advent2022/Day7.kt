@@ -18,7 +18,7 @@ class Day7: AdventDay(2022, 7) {
     }
 
     fun parseCommands(input: List<String>): MutableMap<String, Directory> {
-        var directories : MutableMap<String, Directory> = mutableMapOf()
+        val directories : MutableMap<String, Directory> = mutableMapOf()
         var currentDir : Directory? = null
         input.forEach { line ->
             if (line.startsWith("$")) {
