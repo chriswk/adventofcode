@@ -1,6 +1,7 @@
 package com.chriswk.aoc.util
 
 import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 data class Point2D(val x: Int, val y: Int) {
     operator fun plus(other: Point2D): Point2D {
