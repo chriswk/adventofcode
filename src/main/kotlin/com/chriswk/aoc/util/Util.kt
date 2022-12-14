@@ -248,3 +248,7 @@ infix fun IntRange.wraps(other: IntRange): Boolean =
 
 fun IntRange.size(): Int =
     last - first + 1
+
+fun getCharForTyping(on: String = "⚪️", off: String = "⚫️", predicate: () -> Boolean): String {
+    return if (predicate()) on else off
+}
